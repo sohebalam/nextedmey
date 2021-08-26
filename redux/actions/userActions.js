@@ -77,7 +77,7 @@ export const loadUser = () => async (dispatch) => {
   try {
     dispatch({ type: LOAD_USER_REQUEST })
 
-    const { data } = await axios.get(`/api/profile`)
+    const { data } = await axios.get(`/api/auth/profile`)
 
     dispatch({
       type: LOAD_USER_SUCCESS,

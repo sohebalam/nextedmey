@@ -13,11 +13,16 @@ import { makeStyles } from "@material-ui/core/styles"
 import Container from "@material-ui/core/Container"
 import { useDispatch, useSelector } from "react-redux"
 import { useRouter } from "next/router"
-import { loadUser, userRegister } from "../../redux/actions/userActions"
+import {
+  loadUser,
+  userRegister,
+  socialReg,
+} from "../../redux/actions/userActions"
 import { CircularProgress } from "@material-ui/core"
 import { Alert } from "@material-ui/lab"
 import { getSession } from "next-auth/client"
 import validator from "validator"
+
 import {
   GoogleLoginButton,
   GithubLoginButton,
@@ -62,7 +67,9 @@ const Register = () => {
   const register = useSelector((state) => state.register)
   const { loading, error, success, message } = register
 
-  //   const { name, password, email } = user
+  // const profile = useSelector((state) => state.profile)
+
+  // const { dbUser } = profile
 
   useEffect(() => {
     if (success) {
@@ -110,119 +117,27 @@ const Register = () => {
     dispatch(userRegister(userData))
   }
 
+  if (session) {
+    const { user } = session
+    // console.log(user)
+
+    const userData = {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      password: null,
+    }
+    if (!dbUser) {
+      if (user.id) {
+        dispatch(socialReg(userData))
+        // console.log(userData)
+      }
+    }
+  }
+
   const classes = useStyles()
 
   return (
-    // <Container component="main" maxWidth="xs">
-    //   <CssBaseline />
-    //   <div className={classes.paper}>
-    //     <Avatar className={classes.avatar}>
-    //       <LockOutlinedIcon />
-    //     </Avatar>
-    //     <Typography component="h1" variant="h5">
-    //       Sign up
-    //     </Typography>
-    //     {loading && <CircularProgress />}
-    //     {message && <Alert severity="success">{message}</Alert>}
-    //     {message
-    //       ? ""
-    //       : (error || userError) && (
-    //           <Alert severity="error">{error || userError}</Alert>
-    //         )}
-    //     <form className={classes.form} noValidate onSubmit={submitHandler}>
-    //       <Grid container spacing={2}>
-    //         <Grid item xs={12}>
-    //           <TextField
-    //             autoComplete="name"
-    //             name="name"
-    //             variant="outlined"
-    //             required
-    //             fullWidth
-    //             id="Name"
-    //             label="Name"
-    //             autoFocus
-    //             value={name}
-    //             onChange={(e) => setName(e.target.value)}
-    //           />
-    //         </Grid>
-    //         {/* <Grid item xs={12} sm={6}>
-    //         <TextField
-    //           variant="outlined"
-    //           required
-    //           fullWidth
-    //           id="lastName"
-    //           label="Last Name"
-    //           name="lastName"
-    //           autoComplete="lname"
-    //         /> */}
-    //         {/* </Grid> */}
-    //         <Grid item xs={12}>
-    //           <TextField
-    //             variant="outlined"
-    //             required
-    //             fullWidth
-    //             id="email"
-    //             label="Email Address"
-    //             name="email"
-    //             autoComplete="email"
-    //             value={email}
-    //             onChange={(e) => setEmail(e.target.value)}
-    //           />
-    //         </Grid>
-    //         <Grid item xs={12}>
-    //           <TextField
-    //             variant="outlined"
-    //             required
-    //             fullWidth
-    //             name="password"
-    //             label="Password"
-    //             type="password"
-    //             id="password"
-    //             autoComplete="current-password"
-    //             value={password}
-    //             onChange={(e) => setPassword(e.target.value)}
-    //           />
-    //         </Grid>
-    //         <Grid item xs={12}>
-    //           <TextField
-    //             variant="outlined"
-    //             required
-    //             fullWidth
-    //             name="conPassword"
-    //             label="Confirm Password"
-    //             type="password"
-    //             id="conPassword"
-    //             autoComplete="current-password"
-    //             value={conPassword}
-    //             onChange={(e) => setConPassword(e.target.value)}
-    //           />
-    //         </Grid>
-    //         <Grid item xs={12}>
-    //           <FormControlLabel
-    //             control={<Checkbox value="allowExtraEmails" color="primary" />}
-    //             label="I want to receive inspiration, marketing promotions and updates via email."
-    //           />
-    //         </Grid>
-    //       </Grid>
-    //       <Button
-    //         type="submit"
-    //         fullWidth
-    //         variant="contained"
-    //         color="primary"
-    //         className={classes.submit}
-    //       >
-    //         Sign Up
-    //       </Button>
-    //       <Grid container justifyContent="flex-end">
-    //         <Grid item>
-    //           <Link href="/user/login" variant="body2">
-    //             Already have an account? Sign in
-    //           </Link>
-    //         </Grid>
-    //       </Grid>
-    //     </form>
-    //   </div>
-    // </Container>
     <Container component="main" maxWidth="md">
       <Grid container>
         <Grid item xs={5}>

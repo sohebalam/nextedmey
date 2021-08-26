@@ -12,7 +12,7 @@ import ExitToAppIcon from "@material-ui/icons/ExitToApp"
 import PersonIcon from "@material-ui/icons/Person"
 import AssignmentIcon from "@material-ui/icons/Assignment"
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart"
-// import { loadUser } from "../../redux/actions/userActions"
+import { loadUser } from "../../redux/actions/userActions"
 import { useSelector, useDispatch } from "react-redux"
 import { useEffect } from "react"
 import MenuButton from "../layout/MenuButton"
@@ -34,23 +34,23 @@ function Header() {
 
   // console.log(session)
 
-  // const handleSignin = (e) => {
-  //   e.preventDefault()
-  //   signIn()
-  // }
+  const handleSignin = (e) => {
+    e.preventDefault()
+    signIn()
+  }
 
   const dispatch = useDispatch()
 
-  // const profile = useSelector((state) => state.profile)
-  // const { loading, error, dbUser } = profile
+  const profile = useSelector((state) => state.profile)
+  const { loading, error, dbUser } = profile
 
-  // console.log("headerd", dbUser)
+  console.log("headerd", dbUser)
 
-  // useEffect(() => {
-  //   if (!dbUser) {
-  //     dispatch(loadUser())
-  //   }
-  // }, [dbUser])
+  useEffect(() => {
+    if (!dbUser) {
+      dispatch(loadUser())
+    }
+  }, [dbUser])
 
   const classes = useStyles()
 
