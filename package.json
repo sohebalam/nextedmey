@@ -9,9 +9,25 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@material-ui/core": "^4.12.3",
+    "@material-ui/icons": "^4.11.2",
+    "@material-ui/lab": "^4.0.0-alpha.60",
+    "axios": "^0.21.1",
+    "bcryptjs": "^2.4.3",
+    "bootstrap": "^5.1.0",
+    "mongoose": "^6.0.1",
     "next": "11.1.0",
+    "next-auth": "^3.29.0",
+    "next-connect": "^0.10.2",
+    "next-redux-wrapper": "^7.0.2",
     "react": "17.0.2",
-    "react-dom": "17.0.2"
+    "react-dom": "17.0.2",
+    "react-redux": "^7.2.4",
+    "react-social-login-buttons": "^3.5.1",
+    "redux": "^4.1.1",
+    "redux-devtools-extension": "^2.13.9",
+    "redux-thunk": "^2.3.0",
+    "validator": "^13.6.0"
   },
   "devDependencies": {
     "eslint": "7.32.0",
