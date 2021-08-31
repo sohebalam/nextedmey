@@ -30,7 +30,7 @@ const MenuButton = ({ dbUser }) => {
         aria-controls="simple-menu"
         aria-haspopup="true"
         onClick={handleClick}
-        // style={{ color: "white" }}
+        style={{ color: "white" }}
       >
         <PersonIcon style={{ marginRight: "0.25rem" }} />
         {dbUser.name}
@@ -44,32 +44,33 @@ const MenuButton = ({ dbUser }) => {
       >
         {dbUser.role === "admin" && (
           <div>
-            <Link href="/badmin/allrooms">
+            <Link href="/">
               <MenuItem onClick={handleClose}>Rooms</MenuItem>
             </Link>
 
-            <Link href="/badmin/bookings/bookings">
+            <Link href="/">
               <MenuItem onClick={handleClose}>Bookings</MenuItem>
             </Link>
-            <Link href="/badmin/allusers">
+            <Link href="/">
               <MenuItem onClick={handleClose}>Users</MenuItem>
             </Link>
           </div>
         )}
 
-        <Link href="/user/profile">
+        <Link href="/">
           <MenuItem onClick={handleClose}>Profile</MenuItem>
         </Link>
-        <Link href="/bookings/myBookings">
+        <Link href="/">
           <MenuItem onClick={handleClose}>My Bookings</MenuItem>
         </Link>
         {/* <Link href="/orderslist" underline="none">
           <MenuItem onClick={handleClose}>Orders</MenuItem>
         </Link> */}
-
-        <MenuItem onClick={handleClose} onClick={handleSignout}>
-          SignOut
-        </MenuItem>
+        <Link>
+          <MenuItem onClick={handleClose} onClick={handleSignout}>
+            SignOut
+          </MenuItem>
+        </Link>
       </Menu>
     </div>
   )

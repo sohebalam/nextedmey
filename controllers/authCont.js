@@ -8,7 +8,7 @@ import { sendEmail } from "../middlewares/sendMail"
 import validator from "validator"
 
 export const registerUser = catchAsyncErrors(async (req, res) => {
-  // console.log(req.body)
+  console.log(req.method)
 
   const { name, email, password, conPassword } = req.body
 
@@ -49,8 +49,6 @@ export const registerUser = catchAsyncErrors(async (req, res) => {
 })
 
 export const currentUserProfile = catchAsyncErrors(async (req, res) => {
-  // console.log(req.user.id)
-
   if (req.user.id) {
     const dbUser = await User.findOne({ socialId: req.user.id })
     res.status(200).send(dbUser)
@@ -119,6 +117,8 @@ export const updateProfile = async (req, res) => {
 export const forgotPassword = async (req, res) => {
   // Send Email to email provided but first check if user exists
   const { email } = req.body
+
+  console.log(email)
 
   try {
     const user = await User.findOne({ email })
@@ -216,6 +216,14 @@ export const resetPassword = async (req, res) => {
 export const socialRegister = catchAsyncErrors(async (req, res) => {
   const { name, email, password, id } = req.body
 
+  // console.log(req.body)
+  if (req.body.id) {
+    const userExists = await User.findOne({ socialId: req.body.id })
+
+    if (userExists) {
+      return
+    }
+  }
   if (password) {
     var salt = bcrypt.genSaltSync(10)
     var hashPassword = bcrypt.hashSync(password, salt)

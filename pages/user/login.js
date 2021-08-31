@@ -58,9 +58,9 @@ function Login() {
 
   // console.log(session)
 
-  // const profile = useSelector((state) => state.profile)
+  const profile = useSelector((state) => state.profile)
 
-  // const { dbUser } = profile
+  const { dbUser } = profile
 
   // console.log(dbUser)
 

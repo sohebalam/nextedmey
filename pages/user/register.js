@@ -13,14 +13,10 @@ import { makeStyles } from "@material-ui/core/styles"
 import Container from "@material-ui/core/Container"
 import { useDispatch, useSelector } from "react-redux"
 import { useRouter } from "next/router"
-import {
-  loadUser,
-  userRegister,
-  socialReg,
-} from "../../redux/actions/userActions"
+import { userRegister, socialReg } from "../../redux/actions/userActions"
 import { CircularProgress } from "@material-ui/core"
 import { Alert } from "@material-ui/lab"
-import { getSession } from "next-auth/client"
+import { getSession, useSession, signIn } from "next-auth/client"
 import validator from "validator"
 
 import {
@@ -63,7 +59,7 @@ const Register = () => {
   const [password, setPassword] = useState("")
   const [conPassword, setConPassword] = useState("")
   const [name, setName] = useState("")
-
+  const [session] = useSession()
   const register = useSelector((state) => state.register)
   const { loading, error, success, message } = register
 
@@ -127,6 +123,7 @@ const Register = () => {
       email: user.email,
       password: null,
     }
+    console.log(dbUser)
     if (!dbUser) {
       if (user.id) {
         dispatch(socialReg(userData))

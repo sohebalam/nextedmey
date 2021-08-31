@@ -85,6 +85,7 @@ const Forgot = () => {
           Forgot Password
         </Typography>
         {loading && <CircularProgress />}
+        {error && <Alert severity="warning">{error}</Alert>}
         {message && <Alert severity="success">{message}</Alert>}
         <form className={classes.form} noValidate onSubmit={submitHandler}>
           <Grid container spacing={2}>

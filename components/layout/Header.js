@@ -12,7 +12,7 @@ import ExitToAppIcon from "@material-ui/icons/ExitToApp"
 import PersonIcon from "@material-ui/icons/Person"
 import AssignmentIcon from "@material-ui/icons/Assignment"
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart"
-import { loadUser } from "../../redux/actions/userActions"
+import { loadUser, socialReg } from "../../redux/actions/userActions"
 import { useSelector, useDispatch } from "react-redux"
 import { useEffect } from "react"
 import MenuButton from "../layout/MenuButton"
@@ -44,13 +44,33 @@ function Header() {
   const profile = useSelector((state) => state.profile)
   const { loading, error, dbUser } = profile
 
-  console.log("headerd", dbUser)
+  // console.log("headerd", dbUser)
 
   useEffect(() => {
-    if (!dbUser) {
-      dispatch(loadUser())
+    if (session) {
+      const { user } = session
+      // console.log(user)
+
+      const userData = {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        password: null,
+      }
+      // console.log(dbUser)
+      if (!dbUser) {
+        if (user.id) {
+          dispatch(socialReg(userData))
+          // console.log(userData)
+        }
+      }
     }
-  }, [dbUser])
+    if (!dbUser) {
+      if (session) {
+        dispatch(loadUser())
+      }
+    }
+  }, [session])
 
   const classes = useStyles()
 
@@ -67,30 +87,30 @@ function Header() {
             <Typography variant="h6" className={classes.title}></Typography>
 
             <>
-              {/* {dbUser ? ( */}
-              <>
-                {/* <MenuListButton />
+              {dbUser ? (
+                <>
+                  {/* <MenuListButton />
                   
                   
                   */}
-                {/* <MenuButton dbUser={dbUser} /> */}
-              </>
-              {/* ) : ( */}
-              <>
-                <Link href="/user/register">
-                  <Button color="inherit">
-                    <AssignmentIcon style={{ marginRight: "0.25rem" }} />
-                    Register
-                  </Button>
-                </Link>
-                <Link href="/user/login">
-                  <Button color="inherit">
-                    <PersonIcon style={{ marginRight: "0.25rem" }} />
-                    Login
-                  </Button>
-                </Link>
-              </>
-              {/* )} */}
+                  <MenuButton dbUser={dbUser} />
+                </>
+              ) : (
+                <>
+                  <Link href="/user/register">
+                    <Button color="inherit">
+                      <AssignmentIcon style={{ marginRight: "0.25rem" }} />
+                      Register
+                    </Button>
+                  </Link>
+                  <Link href="/user/login">
+                    <Button color="inherit">
+                      <PersonIcon style={{ marginRight: "0.25rem" }} />
+                      Login
+                    </Button>
+                  </Link>
+                </>
+              )}
             </>
           </Toolbar>
         </AppBar>
