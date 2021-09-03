@@ -6,6 +6,9 @@ import bcrypt from "bcryptjs"
 import jwt from "jsonwebtoken"
 import { sendEmail } from "../middlewares/sendMail"
 import validator from "validator"
+import queryString from "query-string"
+
+const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY)
 
 export const registerUser = catchAsyncErrors(async (req, res) => {
   console.log(req.method)
@@ -220,6 +223,10 @@ export const socialRegister = catchAsyncErrors(async (req, res) => {
   if (req.body.id) {
     const userExists = await User.findOne({ socialId: req.body.id })
 
+    // res.status(403).json({
+    //   message: "Email exists please login",
+    // })
+
     if (userExists) {
       return
     }
@@ -297,3 +304,73 @@ export const deleteUser = catchAsyncErrors(async (req, res) => {
     user,
   })
 })
+
+// export const newInstructor = async (req, res) => {
+//   console.log(req.method)
+//   return
+// }
+
+export const newInstructor = async (req, res) => {
+  try {
+    if (req.user.id) {
+      const user = await User.findOne({ socialId: req.user.id })
+
+      req.user._id = user._id
+    }
+    // console.log(req.method)
+    // 1. find user from db
+    const user = await User.findById(req.user._id).exec()
+    // console.log(user)
+    // 2. if user dont have stripe_account_id yet, then create new
+    if (!user.stripe_account_id) {
+      // const account = await stripe.accounts.create({ type: "standard" })
+      const account = await stripe.accounts.create({ type: "express" })
+      // console.log("ACCOUNT => ", account.id)
+      user.stripe_account_id = account.id
+      user.save()
+    }
+    // 3. create account link based on account id (for frontend to complete onboarding)
+    let accountLink = await stripe.accountLinks.create({
+      account: user.stripe_account_id,
+      refresh_url: process.env.NEXT_PUBLIC_STRIPE_REDIRECT_URL,
+      return_url: process.env.NEXT_PUBLIC_STRIPE_REDIRECT_URL,
+      type: "account_onboarding",
+    })
+    // console.log(accountLink)
+    // 4. pre-fill any info such as email (optional), then send url resposne to frontend
+    accountLink = Object.assign(accountLink, {
+      "stripe_user[email]": user.email,
+    })
+    // 5. then send the account link as response to fronend
+    res.send(`${accountLink.url}?${queryString.stringify(accountLink)}`)
+  } catch (err) {
+    console.log("MAKE INSTRUCTOR ERR ", err)
+  }
+}
+
+export const AccountStatus = async (req, res) => {
+  try {
+    console.log(req.user._id)
+
+    const user = await User.findById(req.user._id).exec()
+    const account = await stripe.accounts.retrieve(user.stripe_account_id)
+    // console.log("ACCOUNT => ", account)
+    if (!account.charges_enabled) {
+      return res.staus(401).send("Unauthorized")
+    } else {
+      const statusUpdated = await User.findByIdAndUpdate(
+        user._id,
+        {
+          stripe_seller: account,
+          role: "instructor",
+        },
+        { new: true }
+      )
+        .select("-password")
+        .exec()
+      res.json(statusUpdated)
+    }
+  } catch (err) {
+    console.log(err)
+  }
+}

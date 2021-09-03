@@ -12,6 +12,9 @@ import {
   LOAD_USER_FAIL,
   LOAD_USER_REQUEST,
   LOAD_USER_SUCCESS,
+  REGISTER_INSTRUCTOR_FAIL,
+  REGISTER_INSTRUCTOR_REQUEST,
+  REGISTER_INSTRUCTOR_SUCCESS,
   REGISTER_USER_FAIL,
   REGISTER_USER_REQUEST,
   REGISTER_USER_SUCCESS,
@@ -295,6 +298,30 @@ export const userDelete = (id) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: DELETE_USER_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    })
+  }
+}
+
+export const regInstructor = () => async (dispatch) => {
+  console.log("In Action")
+  try {
+    dispatch({ type: REGISTER_INSTRUCTOR_REQUEST })
+
+    const { data } = await axios.post(`/api/auth/instructor/new`)
+
+    console.log(data)
+
+    dispatch({
+      type: REGISTER_INSTRUCTOR_SUCCESS,
+      payload: data,
+    })
+  } catch (error) {
+    dispatch({
+      type: REGISTER_INSTRUCTOR_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

@@ -25,6 +25,7 @@ import { UPDATE_PROFILE_RESET } from "../../redux/constants/userTypes"
 import { getSession } from "next-auth/client"
 
 import { Box } from "@material-ui/core"
+import UserNav from "../../components/layout/UserNav"
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -119,7 +120,13 @@ const Profile = () => {
         <CircularProgress />
       ) : (
         <Grid container>
-          <Grid item sm={6}>
+          <Grid item sm={4}>
+            <Box mt="0.5rem">
+              <UserNav />
+            </Box>
+          </Grid>
+
+          <Grid item sm={4}>
             <Container component="main" maxWidth="xs">
               <CssBaseline />
               <div className={classes.paper}>
@@ -151,17 +158,7 @@ const Profile = () => {
                         onChange={onChange}
                       />
                     </Grid>
-                    {/* <Grid item xs={12} sm={6}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                id="lastName"
-                label="Last Name"
-                name="lastName"
-                autoComplete="lname"
-              /> */}
-                    {/* </Grid> */}
+
                     <Grid item xs={12}>
                       <TextField
                         variant="outlined"
@@ -212,7 +209,7 @@ const Profile = () => {
               </div>
             </Container>
           </Grid>
-          <Grid item sm={6}>
+          <Grid item sm={4}>
             <Box styles={{ marginTop: "12" }}>
               <Container component="main" maxWidth="xs">
                 <div className={classes.profile}>

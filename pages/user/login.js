@@ -1,7 +1,7 @@
 import Head from "next/head"
 import Header from "../../components/layout/Header"
 // import styles from "../styles/Home.module.css"
-import { signIn, useSession } from "next-auth/client"
+import { getSession, signIn, useSession } from "next-auth/client"
 import {
   GoogleLoginButton,
   GithubLoginButton,
@@ -207,6 +207,23 @@ function Login() {
       </Grid>
     </Container>
   )
+}
+
+export async function getServerSideProps(context) {
+  const session = await getSession({ req: context.req })
+
+  if (session) {
+    return {
+      redirect: {
+        destination: "/user/profile",
+        permanent: false,
+      },
+    }
+  }
+
+  return {
+    props: {},
+  }
 }
 
 export default Login
