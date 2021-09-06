@@ -49,7 +49,7 @@ const MenuButton = () => {
       >
         {dbUser && dbUser.role === "instructor" ? (
           <div>
-            <Link href="/user/instructor/createcourse">
+            <Link href="/user/instructor/create">
               <MenuItem onClick={handleClose}>Create Course</MenuItem>
             </Link>
           </div>

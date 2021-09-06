@@ -16,6 +16,7 @@ import { loadUser, socialReg } from "../../redux/actions/userActions"
 import { useSelector, useDispatch } from "react-redux"
 import { useEffect } from "react"
 import MenuButton from "../layout/MenuButton"
+import LayersIcon from "@material-ui/icons/Layers"
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -34,10 +35,10 @@ function Header() {
 
   // console.log(session)
 
-  const handleSignin = (e) => {
-    e.preventDefault()
-    signIn()
-  }
+  // const handleSignin = (e) => {
+  //   e.preventDefault()
+  //   signIn()
+  // }
 
   const dispatch = useDispatch()
 
@@ -89,10 +90,15 @@ function Header() {
             <>
               {dbUser ? (
                 <>
-                  {/* <MenuListButton />
-                  
-                  
-                  */}
+                  <div>
+                    <Link href="/user/instructor/create">
+                      <Button style={{ color: "white" }}>
+                        <LayersIcon style={{ marginRight: "0.25rem" }} />
+                        Instructor
+                      </Button>
+                    </Link>
+                  </div>
+
                   <MenuButton dbUser={dbUser} />
                 </>
               ) : (
