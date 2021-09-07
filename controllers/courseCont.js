@@ -1,10 +1,10 @@
 import AWS from "aws-sdk"
 import { nanoid } from "nanoid"
-import Course from "../models/course"
-import slugify from "slugify"
+// import Course from "../models/course"
+// import slugify from "slugify"
 import { readFileSync } from "fs"
-import User from "../models/user"
-import Completed from "../models/completed"
+import User from "../models/userModel"
+// import Completed from "../models/completed"
 const stripe = require("stripe")(process.env.STRIPE_SECRET)
 
 const awsConfig = {
@@ -17,9 +17,8 @@ const awsConfig = {
 const S3 = new AWS.S3(awsConfig)
 
 export const uploadImage = async (req, res) => {
-  console.log(req.body)
+  // console.log(req.body)
 
-  return
   try {
     const { image } = req.body
     if (!image) return res.status(400).send("No image")
@@ -34,7 +33,7 @@ export const uploadImage = async (req, res) => {
 
     // image params
     const params = {
-      Bucket: "edemy2-bucket",
+      Bucket: "ofu-bucket",
       Key: `${nanoid()}.${type}`,
       Body: base64Data,
       ACL: "public-read",
@@ -48,7 +47,7 @@ export const uploadImage = async (req, res) => {
         console.log(err)
         return res.sendStatus(400)
       }
-      console.log(data)
+      // console.log(data)
       res.send(data)
     })
   } catch (err) {
@@ -58,11 +57,12 @@ export const uploadImage = async (req, res) => {
 
 export const removeImage = async (req, res) => {
   try {
-    const { image } = req.body
-    // image params
+    const { etag } = req.body
+    // console.log(req.body)
+
     const params = {
-      Bucket: image.Bucket,
-      Key: image.Key,
+      Bucket: etag.Bucket,
+      Key: etag.Key,
     }
 
     // send remove request to s3

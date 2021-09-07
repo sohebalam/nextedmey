@@ -1,6 +1,7 @@
-import catchAsyncErrors from "../middlewares/catchAsyncErrors"
+import catchAsyncErrors from "./catchAsyncErrors"
 import ErrorHandler from "../utils/errorHandler"
 import { getSession } from "next-auth/client"
+
 export const isAuthenticated = catchAsyncErrors(async (req, res, next) => {
   const session = await getSession({ req })
 

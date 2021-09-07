@@ -1,8 +1,8 @@
 import Link from "next/link"
-import { Box, Input } from "@material-ui/core"
+import { Box, CircularProgress, Input } from "@material-ui/core"
 import MenuBookIcon from "@material-ui/icons/MenuBook"
 import { InputLabel } from "@material-ui/core"
-import { DropzoneAreaBase } from "material-ui-dropzone"
+import { DropzoneArea } from "material-ui-dropzone"
 import { Avatar, FormControl, Select, TextField } from "@material-ui/core"
 import { CssBaseline } from "@material-ui/core"
 import { Typography } from "@material-ui/core"
@@ -60,6 +60,8 @@ const CourseCreate = ({
   handleImage,
   uploadButtonText,
   preview,
+  onDropzoneAreaChange,
+  handleImageRemove,
 }) => {
   const children = []
   for (let i = 9.99; i <= 100.99; i++) {
@@ -142,7 +144,7 @@ const CourseCreate = ({
               />
             </Box>
 
-            {values.paid && (
+            {!values.paid && (
               <FormControl variant="outlined" className={classes.formControl}>
                 <InputLabel id="demo-simple-select-autowidth-label">
                   Price
@@ -165,29 +167,15 @@ const CourseCreate = ({
 
           <Box mt="2rem">
             <Grid container>
-              <Grid item xs={6}>
-                <Box padding="2rem">
-                  <label className="btn btn-outline-secondary btn-block text-left">
-                    {uploadButtonText}
-                    <Input
-                      type="file"
-                      name="image"
-                      onChange={handleImage}
-                      accept="image/*"
-                      hidden
-                    />
-                  </label>
-                </Box>
-              </Grid>
-              <Grid item xs={6}>
-                <Box padding="2rem">
-                  <Avatar
-                    variant="square"
-                    className={classes.large}
-                    src={preview ? preview : <ImageIcon />}
-                  />
-                </Box>
-              </Grid>
+              <DropzoneArea
+                acceptedFiles={["image/*"]}
+                filesLimit={3}
+                maxFileSize={1048576} //1 MB
+                showFileNames={true}
+                dropzoneText={"Drag and drop an image here or click"}
+                onChange={onDropzoneAreaChange}
+                onDelete={handleImageRemove}
+              />
             </Grid>
           </Box>
 
@@ -200,6 +188,7 @@ const CourseCreate = ({
           >
             {values.loading ? "Saving..." : "Save & Continue"}
           </Button>
+          {values.loading && <CircularProgress />}
           <Grid container>
             <Grid item xs>
               {/* <Link href="#" variant="body2">
