@@ -11,9 +11,9 @@ import { CircularProgress } from "@material-ui/core"
 const CourseCreate = () => {
   // state
   const [values, setValues] = useState({
-    name: "",
+    title: "",
     description: "",
-    price: "9.99",
+    price: 0,
     uploading: false,
     paid: true,
     category: "",
@@ -93,23 +93,30 @@ const CourseCreate = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+    var strNum = values.price
+    strNum = strNum.toString().replace("£", "")
+
+    values.price = parseFloat(strNum)
+    // console.log(values)
+    // return
     try {
       // console.log(values);
-      const { data } = await axios.post("/api/course", {
+      const { data } = await axios.post("/api/course/course", {
         ...values,
-        image,
+        etag,
       })
+      console.log(data)
       console.log("Great! Now you can start adding lessons")
-      router.push("/instructor")
-    } catch (err) {
-      console.log(err.response.data)
+      router.push("/user/instructor/dashboard")
+    } catch (error) {
+      console.log(error)
     }
   }
 
   return (
     <InstructorRoute>
       <h1 className="jumbotron text-center square">Create Course</h1>
-      {values.loading && <CircularProgress />}
+
       <div className="pt-3 pb-3">
         <CourseCreateForm
           handleSubmit={handleSubmit}

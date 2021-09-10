@@ -1,7 +1,7 @@
 import AWS from "aws-sdk"
 import { nanoid } from "nanoid"
-// import Course from "../models/course"
-// import slugify from "slugify"
+import Course from "../models/courseModel"
+import slugify from "slugify"
 import { readFileSync } from "fs"
 import User from "../models/userModel"
 // import Completed from "../models/completed"
@@ -79,31 +79,49 @@ export const removeImage = async (req, res) => {
 }
 
 export const create = async (req, res) => {
-  // console.log("CREATE COURSE", req.body)
-  // return
+  // console.log(req.method)
+  // console.log("CREATE COURSE", req.body.price)
+
   try {
     const alreadyExist = await Course.findOne({
-      slug: slugify(req.body.name.toLowerCase()),
+      slug: slugify(req.body.title.toLowerCase()),
     })
     if (alreadyExist) return res.status(400).send("Title is taken")
 
     const course = await new Course({
-      slug: slugify(req.body.name),
+      slug: slugify(req.body.title),
       instructor: req.user._id,
       ...req.body,
     }).save()
 
-    res.json(course)
+    res.status(200).json(course)
   } catch (err) {
     console.log(err)
     return res.status(400).send("Course create failed. Try again.")
   }
 }
 
+export const instructorCourses = async (req, res) => {
+  // console.log(req.method)
+  try {
+    const courses = await Course.find({ instructor: req.user._id })
+      .sort({ createdAt: -1 })
+      .exec()
+    res.status(200).json(courses)
+  } catch (err) {
+    console.log(err)
+  }
+}
+
 export const readCourse = async (req, res) => {
+  const { slug } = req.query
+
+  // console.log(slug)
+
+  // return
   try {
     // console.log(req.method)
-    const course = await Course.findOne({ slug: req.params.slug })
+    const course = await Course.findOne({ slug: slug })
       .populate("instructor", "_id name")
       .exec()
     res.json(course)

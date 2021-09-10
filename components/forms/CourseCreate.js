@@ -97,7 +97,7 @@ const CourseCreate = ({
             label="Course Title"
             name="title"
             autoFocus
-            value={values.name}
+            value={values.title}
             onChange={handleChange}
           />
           <TextField
@@ -125,7 +125,7 @@ const CourseCreate = ({
             label="Description"
             type="text"
             id="description"
-            value={values.name}
+            value={values.description}
             onChange={handleChange}
           />
           <Grid container>

@@ -1,7 +1,7 @@
 import catchAsyncErrors from "./catchAsyncErrors"
 import ErrorHandler from "../utils/errorHandler"
 import { getSession } from "next-auth/client"
-
+import User from "../models/userModel"
 export const isAuthenticated = catchAsyncErrors(async (req, res, next) => {
   const session = await getSession({ req })
 
@@ -13,4 +13,13 @@ export const isAuthenticated = catchAsyncErrors(async (req, res, next) => {
   req.user = session.user
   // console.log(req.user)
   next()
+})
+
+export const isInstructor = catchAsyncErrors(async (req, res, next) => {
+  const user = await User.findById(req.user._id).exec()
+  if (!user.role.includes("instructor")) {
+    return res.status(403)
+  } else {
+    next()
+  }
 })
