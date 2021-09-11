@@ -18,6 +18,8 @@
     "bcryptjs": "^2.4.3",
     "bootstrap": "^5.1.0",
     "cors": "^2.8.5",
+    "express-formidable": "^1.2.0",
+    "formidable": "^1.2.2",
     "i": "^0.3.6",
     "material-ui-dropzone": "^3.5.0",
     "mongoose": "^6.0.1",

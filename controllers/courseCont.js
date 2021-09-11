@@ -131,20 +131,23 @@ export const readCourse = async (req, res) => {
 }
 
 export const uploadVideo = async (req, res) => {
+  // console.log(req.method)
+  // console.log(req.query.instructorId)
+
   try {
     // console.log(req.user._id)
-    // console.log(req.params.instructorId)
 
-    if (req.user._id != req.params.instructorId) {
+    if (req.user._id != req.query.instructorId) {
       return res.status(400).json({ message: "Unathorized" })
     }
 
     const { video } = req.files
+    // console.log(video)
 
     if (!video) res.status(400).json({ message: "No Video" })
 
     const params = {
-      Bucket: "edemy2-bucket",
+      Bucket: "ofu-bucket",
       Key: `${nanoid()}.${video.type.split("/")[1]}`,
       Body: readFileSync(video.path),
       ACL: "public-read",

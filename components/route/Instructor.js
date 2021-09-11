@@ -19,7 +19,7 @@ const InstructorRoute = ({ children }) => {
   // router
   const router = useRouter()
 
-  console.log(session?.user.role)
+  // console.log(session?.user.role)
 
   useEffect(() => {
     if (!dbUser) {
