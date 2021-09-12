@@ -15,7 +15,7 @@ const CourseCreate = () => {
     description: "",
     price: 0,
     uploading: false,
-    paid: true,
+    paid: false,
     category: "",
     loading: false,
   })

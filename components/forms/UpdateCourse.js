@@ -158,8 +158,8 @@ const UpdateCourse = ({
                   <Checkbox
                     value={values?.paid}
                     color="primary"
-                    onChange={(v) =>
-                      setValues({ ...values, paid: !values.paid })
+                    onChange={(e) =>
+                      setValues({ ...values, paid: e.value.checked })
                     }
                   />
                 }
@@ -177,10 +177,6 @@ const UpdateCourse = ({
                   onChange={(e) =>
                     setValues({ ...values, price: e.target.value })
                   }
-                  inputProps={{
-                    name: "age",
-                    id: "filled-age-native-simple",
-                  }}
                 >
                   {children}
                 </Select>

@@ -81,7 +81,11 @@ export const removeImage = async (req, res) => {
 export const create = async (req, res) => {
   // console.log(req.method)
   // console.log("CREATE COURSE", req.body.price)
-  console.log(req.body)
+  // console.log(req.body)
+
+  if (req.body.paid === true && req.body.price === 0) {
+    req.body.price = 9.99
+  }
 
   try {
     const alreadyExist = await Course.findOne({

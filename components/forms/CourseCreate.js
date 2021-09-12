@@ -135,8 +135,8 @@ const CourseCreate = ({
                   <Checkbox
                     value={values.paid}
                     color="primary"
-                    onChange={(v) =>
-                      setValues({ ...values, paid: !values.paid })
+                    onChange={(e) =>
+                      setValues({ ...values, paid: e.target.checked })
                     }
                   />
                 }
@@ -144,7 +144,7 @@ const CourseCreate = ({
               />
             </Box>
 
-            {!values.paid && (
+            {values.paid && (
               <FormControl variant="outlined" className={classes.formControl}>
                 <InputLabel id="demo-simple-select-autowidth-label">
                   Price
@@ -154,10 +154,6 @@ const CourseCreate = ({
                   onChange={(e) =>
                     setValues({ ...values, price: e.target.value })
                   }
-                  inputProps={{
-                    name: "age",
-                    id: "filled-age-native-simple",
-                  }}
                 >
                   {children}
                 </Select>
