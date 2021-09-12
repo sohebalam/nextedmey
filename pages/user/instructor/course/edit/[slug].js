@@ -1,9 +1,128 @@
+import { useState } from "react"
 import UpdateCourse from "../../../../../components/forms/UpdateCourse"
-
+import Resizer from "react-image-file-resizer"
+import axios from "axios"
 const EditCourse = () => {
+  const [values, setValues] = useState({
+    title: "",
+    description: "",
+    price: 0,
+    uploading: false,
+    paid: true,
+    category: "",
+    loading: false,
+  })
+
+  const handleChange = (e) => {
+    console.log(e.value.checked)
+    setValues({ ...values, [e.target.name]: e.target.value })
+  }
+
+  const handleImage = (e) => {
+    let file = e.target.files[0]
+    setPreview(window.URL.createObjectURL(file))
+    setUploadButtonText(file.name)
+    setValues({ ...values, loading: true })
+    // resize
+    Resizer.imageFileResizer(file, 720, 500, "JPEG", 100, 0, async (uri) => {
+      try {
+        let { data } = await axios.post("/api/course/upload-image", {
+          image: uri,
+        })
+        console.log("IMAGE UPLOADED", data)
+        // set image in the state
+        setImage(data)
+        setValues({ ...values, loading: false })
+      } catch (err) {
+        console.log(err)
+        setValues({ ...values, loading: false })
+        // toast("Image upload failed. Try later.")
+      }
+    })
+  }
+
+  const handleImageRemove = async () => {
+    try {
+      // console.log(values);
+      setValues({ ...values, loading: true })
+      const res = await axios.post("/api/course/remove-image", { image })
+      setImage({})
+      setPreview("")
+      setUploadButtonText("Upload Image")
+      setValues({ ...values, loading: false })
+    } catch (err) {
+      console.log(err)
+      setValues({ ...values, loading: false })
+      // toast("Image upload failed. Try later.")
+    }
+  }
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    console.log(e)
+    try {
+      // console.log(values);
+      const { data } = await axios.put(`/api/course/${slug}`, {
+        ...values,
+        image,
+      })
+      console.log("here")
+      // toast("Course updated!")
+      // router.push("/instructor");
+    } catch (err) {
+      // toast(err.response.data)
+    }
+  }
+  const onDropzoneArea = (files) =>
+    new Promise((resolve, reject) => {
+      let reader = new FileReader()
+      let file = files[0]
+
+      if (file) {
+        reader.readAsDataURL(file)
+      }
+      reader.onload = function () {
+        console.log(reader.result)
+      }
+      reader.onerror = (error) => reject(error)
+
+      if (file) {
+        setValues({ ...values, loading: true })
+        Resizer.imageFileResizer(
+          file,
+          500,
+          300,
+          "JPEG",
+          100,
+          0,
+          async (uri) => {
+            try {
+              let { data } = await axios.post("/api/course/image", {
+                image: uri,
+              })
+              console.log("IMAGE UPLOADED", data)
+              setImage(data)
+              // setImage(data)
+              setValues({ ...values, loading: false })
+            } catch (err) {
+              console.log(err)
+              setValues({ ...values, loading: false })
+              console.log("upload failed. Try later")
+            }
+          }
+        )
+      }
+    })
   return (
     <div>
-      <UpdateCourse />
+      <UpdateCourse
+        handleChange={handleChange}
+        values={values}
+        setValues={setValues}
+        handleImage={handleImage}
+        handleImageRemove={handleImageRemove}
+        handleSubmit={handleSubmit}
+        onDropzoneArea={onDropzoneArea}
+      />
     </div>
   )
 }

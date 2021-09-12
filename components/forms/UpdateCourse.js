@@ -55,24 +55,16 @@ const useStyles = makeStyles((theme) => ({
 const UpdateCourse = ({
   handleSubmit,
   handleChange,
-
-  onDropzoneAreaChange,
+  onDropzoneArea,
   handleImageRemove,
+  setValues,
+  values,
 }) => {
   const children = []
   for (let i = 9.99; i <= 100.99; i++) {
     children.push(<option key={i.toFixed(2)}>£{i.toFixed(2)}</option>)
   }
 
-  const [values, setValues] = useState({
-    title: "",
-    description: "",
-    price: 0,
-    uploading: false,
-    paid: true,
-    category: "",
-    loading: false,
-  })
   // const [image, setImage] = useState({})
   const [etag, setEtag] = useState({})
   const [preview, setPreview] = useState("")
@@ -81,7 +73,7 @@ const UpdateCourse = ({
   const router = useRouter()
   const { slug } = router.query
 
-  console.log(slug)
+  // console.log(slug)
 
   const classes = useStyles()
 
@@ -97,6 +89,7 @@ const UpdateCourse = ({
       setUrlimage(url)
     }
     setValues(data)
+    // console.log("price", values.price)
   }
 
   return (
@@ -120,7 +113,7 @@ const UpdateCourse = ({
             // label="Course Title"
             name="title"
             autoFocus
-            value={values?.title}
+            value={values?.title || ""}
             onChange={handleChange}
           />
           <TextField
@@ -132,7 +125,7 @@ const UpdateCourse = ({
             // label="Category"
             name="category"
             autoFocus
-            value={values?.category}
+            value={values?.category || ""}
             onChange={handleChange}
           />
 
@@ -148,40 +141,42 @@ const UpdateCourse = ({
             // label="Description"
             type="text"
             id="description"
-            value={values?.description}
+            value={values?.description || ""}
             onChange={handleChange}
           />
           <Grid container>
             <Box padding="1.3rem">
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    value={values?.paid}
-                    color="primary"
-                    onChange={(e) =>
-                      setValues({ ...values, paid: e.value.checked })
-                    }
-                  />
-                }
-                label="Paid"
-              />
+              {values?.price && (
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={values?.paid || false}
+                      color="primary"
+                      onChange={(e) =>
+                        setValues({ ...values, paid: e.target.checked })
+                      }
+                      // onChange={(e) => console.log(e.target.checked)}
+                    />
+                  }
+                  label="Paid"
+                />
+              )}
             </Box>
 
-            {values?.paid && (
-              <FormControl variant="outlined" className={classes.formControl}>
-                <InputLabel id="demo-simple-select-autowidth-label">
-                  Price
-                </InputLabel>
-                <Select
-                  native
-                  onChange={(e) =>
-                    setValues({ ...values, price: e.target.value })
-                  }
-                >
-                  {children}
-                </Select>
-              </FormControl>
-            )}
+            <FormControl variant="outlined" className={classes.formControl}>
+              <InputLabel id="demo-simple-select-autowidth-label">
+                Price
+              </InputLabel>
+
+              <Select
+                native
+                onChange={(e) =>
+                  setValues({ ...values, price: e.target.value })
+                }
+              >
+                {children}
+              </Select>
+            </FormControl>
           </Grid>
 
           <Box mt="2rem">
@@ -189,13 +184,13 @@ const UpdateCourse = ({
               {urlimage && (
                 <DropzoneArea
                   initialFiles={[urlimage]}
-                  // acceptedFiles={["image/*"]}
-                  // filesLimit={3}
-                  // maxFileSize={1048576} //1 MB
-                  // showFileNames={true}
-                  // dropzoneText={"Drag and drop an image here or click"}
-                  // onChange={onDropzoneAreaChange}
-                  // onDelete={handleImageRemove}
+                  acceptedFiles={["image/*"]}
+                  filesLimit={3}
+                  maxFileSize={1048576} //1 MB
+                  showFileNames={true}
+                  dropzoneText={"Drag and drop an image here or click"}
+                  onChange={onDropzoneArea}
+                  onDelete={handleImageRemove}
                 />
               )}
             </Grid>
