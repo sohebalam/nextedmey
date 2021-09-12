@@ -14,6 +14,7 @@ import {
   makeStyles,
   DialogActions,
   IconButton,
+  ListItemAvatar,
 } from "@material-ui/core"
 // import { CheckOutlined, UploadOutlined } from "@ant-design/icons"
 import Item from "@material-ui/icons"
@@ -27,7 +28,7 @@ import PublishIcon from "@material-ui/icons/Publish"
 import Dialog from "@material-ui/core/Dialog"
 import AddLesson from "../../../../components/forms/AddLesson"
 import CloseIcon from "@material-ui/icons/Close"
-
+import ListItem from "@material-ui/core/ListItem"
 const useStyles = makeStyles((theme) => ({
   paper: {
     overflowY: "unset",
@@ -38,6 +39,9 @@ const useStyles = makeStyles((theme) => ({
     top: "-9%",
     backgroundColor: "lightgray",
     color: "primary",
+  },
+  avcolor: {
+    backgroundColor: theme.palette.primary.main,
   },
 }))
 
@@ -69,24 +73,23 @@ const CourseView = () => {
 
   const handleAddLesson = async (e) => {
     e.preventDefault()
-
-    return
-    const classes = useStyles()
+    setUploading(true)
+    let instructorId = course.instructor._id
     try {
       const { data } = await axios.post(
-        `/api/course/lesson/${slug}/${course.instructor._id}`,
+        `/api/course/${slug}/${instructorId}`,
         values
       )
-
+      setUploading(false)
       setValues({ ...values, title: "", content: "", video: {} })
       setProgress(0)
       setUploadButtonText("Upload video")
       setVisible(false)
       setCourse(data)
-      toast("Lesson added")
+      // toast("Lesson added")
     } catch (error) {
       console.log(error)
-      toast("Lesson add failed")
+      // toast("Lesson add failed")
     }
   }
 
@@ -98,13 +101,8 @@ const CourseView = () => {
       const file = e.target.files[0]
       setUploadButtonText(file.name)
       setUploading(true)
-      console.log(file.name)
       const formData = new FormData()
       formData.append("video", file)
-
-      // videoData.append("video", file)
-
-      console.log(formData)
 
       let instructorId = course.instructor._id
 
@@ -117,7 +115,7 @@ const CourseView = () => {
         }
       )
 
-      console.log(data)
+      // console.log(data)
       setValues({ ...values, video: data })
       setUploading(false)
       // toast("Video Upload Success")
@@ -128,23 +126,29 @@ const CourseView = () => {
     }
   }
 
-  //   const handelVideoRemove = async () => {
-  //     try {
-  //       setUploading(true)
-  //       const { data } = await axios.post(
-  //         `/api/course/video-remove/${course.instructor._id}`,
-  //         values.video
-  //       )
-  //       console.log(data)
-  //       setValues({ ...values, video: {} })
-  //       setUploading(false)
-  //       setUploadButtonText("Upload another video")
-  //     } catch (err) {
-  //       console.log(err)
-  //       setUploading(false)
-  //       toast("Video remove failed")
-  //     }
-  //   }
+  const handelVideoRemove = async () => {
+    try {
+      setUploading(true)
+
+      let instructorId = course.instructor._id
+      // console.log(values)
+      let video = values.video
+      console.log(video)
+
+      const { data } = await axios.post(
+        `/api/course/video/remove/${instructorId}`,
+        values.video
+      )
+      console.log(data)
+      setValues({ ...values, video: {} })
+      setUploading(false)
+      setUploadButtonText("Upload Video")
+    } catch (err) {
+      console.log(err)
+      setUploading(false)
+      // toast("Video remove failed")
+    }
+  }
 
   //   const handlePublish = async (e, courseId) => {
   //     try {
@@ -200,7 +204,7 @@ const CourseView = () => {
                   <Tooltip title="Edit">
                     <EditIcon
                       onClick={() =>
-                        router.push(`/instructor/course/edit/${slug}`)
+                        router.push(`/user/instructor/course/edit/${slug}`)
                       }
                       className="h5 pointer text-warning mr-4"
                     />
@@ -266,8 +270,8 @@ const CourseView = () => {
             uploading={uploading}
             uploadButtonText={uploadButtonText}
             handelVideo={handelVideo}
-            // progress={progress}
-            // handelVideoRemove={handelVideoRemove}
+            progress={progress}
+            handelVideoRemove={handelVideoRemove}
           />
           <DialogActions>
             <IconButton
@@ -281,37 +285,22 @@ const CourseView = () => {
           </DialogActions>
         </Dialog>
       </>
-      <div></div>
+      <div>
+        <h4>{course && course.lessons && course.lessons.length} Lessons</h4>
+        {course &&
+          course.lessons?.map((lesson, index) => (
+            <List key={lesson._id}>
+              <ListItem>
+                <ListItemAvatar>
+                  <Avatar className={classes.avcolor}>{index + 1}</Avatar>
+                </ListItemAvatar>
+                {lesson.title}
+              </ListItem>
+            </List>
+          ))}
+      </div>
     </InstructorRoute>
   )
 }
 
 export default CourseView
-{
-  /* <div className="row">
-              <Button
-                className="col-md-6 offset-md-3 text-center"
-                type="primary"
-                shape="round"
-                icon={<UploadOutlined />}
-                size="large"
-                onClick={() => setVisible(true)}
-              >
-                Add Lesson
-              </Button>
-            </div> */
-}
-
-// <div className="row pb-5">
-//   <div className="col lesson-list">
-//     <h4>
-//       {course && course.lessons && course.lessons.length} Lessons
-//     </h4>
-//     {/* <Avatar
-//       style={{ height: "100px", width: "100px" }}
-//       src={course.image ? course.image.Location : "/course.jpg"}
-//     /> */}
-//   </div>
-// </div>
-{
-}

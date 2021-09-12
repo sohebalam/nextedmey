@@ -5,10 +5,12 @@ import MenuItem from "@material-ui/core/MenuItem"
 import { signOut } from "next-auth/client"
 import PersonIcon from "@material-ui/icons/Person"
 // import Link from "next/link"
+import LayersIcon from "@material-ui/icons/Layers"
 
 import { Link } from "@material-ui/core"
 import { useSelector } from "react-redux"
-const MenuButton = () => {
+
+const InstructorMenu = () => {
   const [anchorEl, setAnchorEl] = React.useState(null)
   const profile = useSelector((state) => state.profile)
   const { loading, error, dbUser } = profile
@@ -37,8 +39,8 @@ const MenuButton = () => {
         onClick={handleClick}
         style={{ color: "white" }}
       >
-        <PersonIcon style={{ marginRight: "0.25rem" }} />
-        {dbUser.name}
+        <LayersIcon style={{ marginRight: "0.25rem" }} />
+        Instructor
       </Button>
       <Menu
         id="simple-menu"
@@ -49,14 +51,14 @@ const MenuButton = () => {
       >
         {dbUser && dbUser.role === "instructor" ? (
           <div>
-            {/* <Link href="/user/instructor/create">
+            <Link href="/user/instructor/create">
               <MenuItem onClick={handleClose}>Create Course</MenuItem>
-            </Link> */}
+            </Link>
           </div>
         ) : (
           <div>
-            <Link href="/user/instructor/new">
-              <MenuItem onClick={handleClose}>Become instructor</MenuItem>
+            <Link href="/user/instructor/dashboard">
+              <MenuItem onClick={handleClose}>Instructor Dashboard</MenuItem>
             </Link>
           </div>
         )}
@@ -75,11 +77,12 @@ const MenuButton = () => {
           </div>
         )}
 
-        <Link href="/user/profile">
-          <MenuItem onClick={handleClose}>Profile</MenuItem>
+        <Link href="/user/instructor/dashboard">
+          <MenuItem onClick={handleClose}>Instructor Dashboard</MenuItem>
         </Link>
-        <Link href="/">
-          <MenuItem onClick={handleClose}>My Bookings</MenuItem>
+
+        <Link href="/user/instructor/course/edit/${slug}">
+          <MenuItem onClick={handleClose}>Update Course</MenuItem>
         </Link>
 
         <Link>
@@ -92,4 +95,4 @@ const MenuButton = () => {
   )
 }
 
-export default MenuButton
+export default InstructorMenu

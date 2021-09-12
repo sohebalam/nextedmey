@@ -2,6 +2,7 @@ import {
   Box,
   Button,
   CircularProgress,
+  Grid,
   Input,
   InputLabel,
   makeStyles,
@@ -11,6 +12,7 @@ import {
 
 import { Cancel } from "@material-ui/icons"
 import UploadButton from "../layout/UploadButton"
+import LinearProgress from "@material-ui/core/LinearProgress"
 
 const useStyles = makeStyles((theme) => ({
   input: {
@@ -25,8 +27,8 @@ const AddLessonForm = ({
   uploading,
   uploadButtonText,
   handelVideo,
-  //   progress,
-  //   handelVideoRemove,
+  progress,
+  handelVideoRemove,
 }) => {
   const classes = useStyles()
   return (
@@ -55,48 +57,59 @@ const AddLessonForm = ({
           placeholder="Content"
         ></TextField>
 
-        <Box mt="0.75rem">
-          <input
-            accept="video/*"
-            className={classes.input}
-            id="icon-button-file"
-            multiple
-            onChange={handelVideo}
-            type="file"
-          />
-          <InputLabel htmlFor="icon-button-file">
-            <Button
-              component="span"
-              aria-label="upload"
-              fullWidth={true}
-              variant="outlined"
-              color="secondary"
-            >
-              {uploadButtonText}
-            </Button>
-          </InputLabel>
+        <Box mt="0.75rem" mb="0.75rem">
+          <Grid container>
+            <Grid item xs={!uploading && values.video.Location ? 11 : 12}>
+              <input
+                accept="video/*"
+                className={classes.input}
+                id="icon-button-file"
+                multiple
+                onChange={handelVideo}
+                type="file"
+              />
+              <InputLabel htmlFor="icon-button-file">
+                <Button
+                  component="span"
+                  aria-label="upload"
+                  fullWidth={true}
+                  variant="outlined"
+                  color="secondary"
+                >
+                  {uploadButtonText}
+                </Button>
+              </InputLabel>
+            </Grid>
+            <Grid item xs="auto">
+              {!uploading && values.video.Location && (
+                <Box padding="0.3rem">
+                  <Tooltip title="Remove">
+                    <span onClick={handelVideoRemove}>
+                      <Cancel />
+                    </span>
+                  </Tooltip>
+                </Box>
+              )}
+            </Grid>
+          </Grid>
         </Box>
 
-        <Tooltip title="Remove">
-          {/* <span onClick={handelVideoRemove} className="pt-1 pl-3"> */}
-          <Cancel className="text-danger d-flex justify-content-center pt-4 pointer" />
-          {/* </span> */}
-        </Tooltip>
-
-        {/* {progress > 0 && (
-          <CircularProgress
-            className="d-flex justify-content-center pt-2"
-            // percent={progress}
-            steps={10}
+        {progress > 0 && (
+          <LinearProgress
+            variant="buffer"
+            value={progress}
+            valueBuffer={progress}
           />
-        )} */}
+        )}
+        {uploading && <CircularProgress />}
         <Button
+          style={{ marginTop: "0.5rem" }}
           onClick={handleAddLesson}
           variant="outlined"
           className="mb-3"
           fullWidth
           color="primary"
-          //   loading={uploading}
+          disabled={uploading}
         >
           Save
         </Button>

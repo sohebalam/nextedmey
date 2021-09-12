@@ -45,7 +45,7 @@ export const uploadImage = async (req, res) => {
     S3.upload(params, (err, data) => {
       if (err) {
         console.log(err)
-        return res.sendStatus(400)
+        return res.status(400)
       }
       // console.log(data)
       res.send(data)
@@ -69,7 +69,7 @@ export const removeImage = async (req, res) => {
     S3.deleteObject(params, (err, data) => {
       if (err) {
         console.log(err)
-        return res.sendStatus(400)
+        return res.status(400)
       }
       res.send({ ok: true })
     })
@@ -81,6 +81,7 @@ export const removeImage = async (req, res) => {
 export const create = async (req, res) => {
   // console.log(req.method)
   // console.log("CREATE COURSE", req.body.price)
+  console.log(req.body)
 
   try {
     const alreadyExist = await Course.findOne({
@@ -114,9 +115,11 @@ export const instructorCourses = async (req, res) => {
 }
 
 export const readCourse = async (req, res) => {
+  console.log(req.method)
   const { slug } = req.query
-
-  // console.log(slug)
+  if (req.query) {
+    console.log(req.query)
+  }
 
   // return
   try {
@@ -157,9 +160,9 @@ export const uploadVideo = async (req, res) => {
     S3.upload(params, (err, data) => {
       if (err) {
         console.log(err)
-        return res.sendStatus(400)
+        return res.status(400)
       }
-      console.log(data)
+      // console.log(data)
       res.send(data)
     })
   } catch (error) {
@@ -167,8 +170,11 @@ export const uploadVideo = async (req, res) => {
   }
 }
 export const removeVideo = async (req, res) => {
+  // console.log(req.body)
+  // console.log(req.method)
+
   try {
-    if (req.user._id != req.params.instructorId) {
+    if (req.user._id != req.query.instructorId) {
       return res.status(400).json({ message: "Unathorized" })
     }
 
@@ -185,9 +191,9 @@ export const removeVideo = async (req, res) => {
     S3.deleteObject(params, (err, data) => {
       if (err) {
         console.log(err)
-        return res.sendStatus(400)
+        return res.status(400)
       }
-      console.log(data)
+      // console.log(data)
       res.send({ ok: true })
     })
   } catch (error) {
@@ -197,7 +203,7 @@ export const removeVideo = async (req, res) => {
 
 export const addLesson = async (req, res) => {
   try {
-    const { slug, instructorId } = req.params
+    const { slug, instructorId } = req.query
     const { title, content, video } = req.body
     if (req.user._id != instructorId) {
       return res.status(400).json({ message: "Unathorized" })

@@ -16,7 +16,7 @@ import { loadUser, socialReg } from "../../redux/actions/userActions"
 import { useSelector, useDispatch } from "react-redux"
 import { useEffect } from "react"
 import MenuButton from "../layout/MenuButton"
-import LayersIcon from "@material-ui/icons/Layers"
+import InstructorMenu from "./InstructorMenu"
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -91,12 +91,12 @@ function Header() {
               {dbUser ? (
                 <>
                   <div>
-                    <Link href="/user/instructor/create">
-                      <Button style={{ color: "white" }}>
-                        <LayersIcon style={{ marginRight: "0.25rem" }} />
-                        Instructor
-                      </Button>
-                    </Link>
+                    {/* <Link href="/user/instructor/create"> */}
+                    {/* <Button style={{ color: "white" }}> */}
+
+                    <InstructorMenu dbUser={dbUser} />
+                    {/* </Button> */}
+                    {/* </Link> */}
                   </div>
 
                   <MenuButton dbUser={dbUser} />

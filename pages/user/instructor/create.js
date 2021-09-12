@@ -19,8 +19,7 @@ const CourseCreate = () => {
     category: "",
     loading: false,
   })
-  // const [image, setImage] = useState({})
-  const [etag, setEtag] = useState({})
+  const [image, setImage] = useState({})
   const [preview, setPreview] = useState("")
   const [uploadButtonText, setUploadButtonText] = useState("Upload Image")
 
@@ -59,7 +58,7 @@ const CourseCreate = () => {
                 image: uri,
               })
               console.log("IMAGE UPLOADED", data)
-              setEtag(data)
+              setImage(data)
               // setImage(data)
               setValues({ ...values, loading: false })
             } catch (err) {
@@ -73,14 +72,14 @@ const CourseCreate = () => {
     })
 
   const handleImageRemove = async () => {
-    // console.log("image remove", etag.Bucket)
+    // console.log("image remove", image.Bucket)
 
     // window.confirm("Are you sure you want to delete")
     try {
-      console.log("etag", etag)
+      console.log("image", image)
       setValues({ ...values, loading: true })
-      const res = await axios.post("/api/course/delete", { etag })
-      setEtag({})
+      const res = await axios.post("/api/course/delete", { image })
+      setImage({})
       setPreview("")
       setUploadButtonText("Upload Image")
       setValues({ ...values, loading: false })
@@ -103,7 +102,7 @@ const CourseCreate = () => {
       // console.log(values);
       const { data } = await axios.post("/api/course/course", {
         ...values,
-        etag,
+        image,
       })
       console.log(data)
       console.log("Great! Now you can start adding lessons")
