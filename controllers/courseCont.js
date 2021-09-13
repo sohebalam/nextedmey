@@ -119,10 +119,10 @@ export const instructorCourses = async (req, res) => {
 }
 
 export const readCourse = async (req, res) => {
-  console.log(req.method)
+  // console.log(req.method)
   const { slug } = req.query
   if (req.query) {
-    console.log(req.query)
+    // console.log(req.query)
   }
 
   // return
@@ -232,7 +232,7 @@ export const addLesson = async (req, res) => {
 
 export const update = async (req, res) => {
   try {
-    const { slug } = req.params
+    const { slug } = req.query
     // console.log(slug)
     const course = await Course.findOne({ slug }).exec()
     // console.log("course", course)

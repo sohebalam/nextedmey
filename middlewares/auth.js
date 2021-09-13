@@ -18,6 +18,7 @@ export const isAuthenticated = catchAsyncErrors(async (req, res, next) => {
 export const isInstructor = catchAsyncErrors(async (req, res, next) => {
   const user = await User.findById(req.user._id).exec()
   if (!user.role.includes("instructor")) {
+    console.log("yes")
     return res.status(403)
   } else {
     next()

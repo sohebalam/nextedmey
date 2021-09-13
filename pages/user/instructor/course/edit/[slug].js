@@ -2,6 +2,7 @@ import { useState } from "react"
 import UpdateCourse from "../../../../../components/forms/UpdateCourse"
 import Resizer from "react-image-file-resizer"
 import axios from "axios"
+import { useRouter } from "next/router"
 const EditCourse = () => {
   const [values, setValues] = useState({
     title: "",
@@ -13,10 +14,14 @@ const EditCourse = () => {
     loading: false,
   })
 
+  const [image, setImage] = useState("")
+
   const handleChange = (e) => {
-    console.log(e.value.checked)
     setValues({ ...values, [e.target.name]: e.target.value })
   }
+  const router = useRouter()
+
+  const { slug } = router.query
 
   const handleImage = (e) => {
     let file = e.target.files[0]
@@ -26,7 +31,7 @@ const EditCourse = () => {
     // resize
     Resizer.imageFileResizer(file, 720, 500, "JPEG", 100, 0, async (uri) => {
       try {
-        let { data } = await axios.post("/api/course/upload-image", {
+        let { data } = await axios.post("/api/course/image", {
           image: uri,
         })
         console.log("IMAGE UPLOADED", data)
@@ -45,7 +50,10 @@ const EditCourse = () => {
     try {
       // console.log(values);
       setValues({ ...values, loading: true })
-      const res = await axios.post("/api/course/remove-image", { image })
+      const { data } = await axios.post(
+        `/api/course/video/remove/${instructorId}`,
+        values.video
+      )
       setImage({})
       setPreview("")
       setUploadButtonText("Upload Image")
@@ -58,14 +66,19 @@ const EditCourse = () => {
   }
   const handleSubmit = async (e) => {
     e.preventDefault()
-    console.log(e)
+    // console.log(e)
     try {
-      // console.log(values);
-      const { data } = await axios.put(`/api/course/${slug}`, {
+      console.log(values)
+      var strNum = values.price
+      strNum = strNum.toString().replace("£", "")
+
+      values.price = parseFloat(strNum)
+
+      const { data } = await axios.put(`/api/course/update/${slug}`, {
         ...values,
         image,
       })
-      console.log("here")
+      console.log("here", data)
       // toast("Course updated!")
       // router.push("/instructor");
     } catch (err) {

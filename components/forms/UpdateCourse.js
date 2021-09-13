@@ -96,7 +96,6 @@ const UpdateCourse = ({
     <Container component="main" maxWidth="sm">
       <CssBaseline />
       <div className={classes.paper}>
-        {JSON.stringify(values)}
         <Avatar className={classes.avatar}>
           <MenuBookIcon />
         </Avatar>
