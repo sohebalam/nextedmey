@@ -29,6 +29,7 @@ import Dialog from "@material-ui/core/Dialog"
 import AddLesson from "../../../../components/forms/AddLesson"
 import CloseIcon from "@material-ui/icons/Close"
 import ListItem from "@material-ui/core/ListItem"
+
 const useStyles = makeStyles((theme) => ({
   paper: {
     overflowY: "unset",

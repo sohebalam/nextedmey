@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react"
 
-import Link from "next/link"
 import { Box, CircularProgress, Input } from "@material-ui/core"
 import MenuBookIcon from "@material-ui/icons/MenuBook"
 import { InputLabel } from "@material-ui/core"
@@ -149,7 +148,7 @@ const UpdateCourse = ({
                 <FormControlLabel
                   control={
                     <Checkbox
-                      checked={values?.paid || false}
+                      checked={values?.paid}
                       color="primary"
                       onChange={(e) =>
                         setValues({ ...values, paid: e.target.checked })
