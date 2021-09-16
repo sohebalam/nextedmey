@@ -253,8 +253,10 @@ export const update = async (req, res) => {
 }
 
 export const removeLesson = async (req, res) => {
+  console.log(req.query, req.body)
+  return
   try {
-    const { slug, lessonId } = req.params
+    const { slug, lessonId } = req.query
     const course = await Course.findOne({ slug }).exec()
     if (req.user._id != course.instructor) {
       return res.status(400).json({ message: "Unathorized" })
