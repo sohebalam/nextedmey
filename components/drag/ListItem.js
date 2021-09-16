@@ -30,7 +30,6 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 const ListItemCard = ({ item, provided, snapshot, index }) => {
-  // console.log(item)
   const classes = useStyles()
   return (
     <Container component="main" maxWidth="sm" style={{ padding: "0.25rem" }}>

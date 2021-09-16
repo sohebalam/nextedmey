@@ -4,9 +4,22 @@ import Resizer from "react-image-file-resizer"
 import axios from "axios"
 import { useRouter } from "next/router"
 import { List } from "@material-ui/icons"
-import { ListItemAvatar, makeStyles, Container } from "@material-ui/core"
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd"
-import ListItemCard from "../../../../../components/drag/ListItem"
+import {
+  ListItemAvatar,
+  makeStyles,
+  Container,
+  CardContent,
+  Avatar,
+  Grid,
+  Box,
+  Card,
+  Typography,
+  ListItem,
+} from "@material-ui/core"
+// import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd"
+// import ListItemCard from "../../../../../components/drag/ListItem"
+import DraggableList from "react-draggable-lists"
+import DragIndicatorIcon from "@material-ui/icons/DragIndicator"
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -116,7 +129,7 @@ const EditCourse = () => {
         reader.readAsDataURL(file)
       }
       reader.onload = function () {
-        console.log(reader.result)
+        // console.log(reader.result)
       }
       reader.onerror = (error) => reject(error)
 
@@ -134,7 +147,7 @@ const EditCourse = () => {
               let { data } = await axios.post("/api/course/image", {
                 image: uri,
               })
-              console.log("IMAGE UPLOADED", data)
+              // console.log("IMAGE UPLOADED", data)
               setImage(data)
               // setImage(data)
               setValues({ ...values, loading: false })
@@ -147,76 +160,59 @@ const EditCourse = () => {
         )
       }
     })
+  // console.log(values.lessons)
 
-  const [items, setItems] = useState(values.lessons)
-  const onDragEnd = (result) => {
-    const newItems = Array.from(items)
-    const [removed] = newItems.splice(result.source.index, 1)
-    newItems.splice(result.destination.index, 0, removed)
-    setItems(newItems)
-  }
+  const classes = useStyles()
 
   return (
     <>
-      <div>
-        <UpdateCourse
-          handleChange={handleChange}
-          values={values}
-          setValues={setValues}
-          handleImage={handleImage}
-          handleImageRemove={handleImageRemove}
-          handleSubmit={handleSubmit}
-          onDropzoneArea={onDropzoneArea}
-        />
-      </div>
-      <div>
-        {/* <h4>{values && values.lessons && values.lessons.length} Lessons</h4>
-        {values &&
-          values.lessons?.map((lesson, index) => (
-            <List
-              key={lesson._id}
-              onDragOver={(e) => e.preventDefault()}
-              onDragStart={(e) => handleDrag(e, index)}
-              onDrop={(e) => handleDrop(e, index)}
-              draggable
-            >
-              <ListItem>
-                <ListItemAvatar>
-                  <Avatar className={classes.avcolor}>{index + 1}</Avatar>
-                </ListItemAvatar>
-                {lesson.title}
-              </ListItem>
-            </List>
-          ))} */}
+      {values && values.lessons && (
+        <>
+          <div>
+            <UpdateCourse
+              handleChange={handleChange}
+              values={values}
+              setValues={setValues}
+              handleImage={handleImage}
+              handleImageRemove={handleImageRemove}
+              handleSubmit={handleSubmit}
+              onDropzoneArea={onDropzoneArea}
+            />
+          </div>
+          <div>
+            <div style={{ width: 500, margin: "0 auto" }}>
+              <DraggableList width={500} height={100} rowSize={1}>
+                {values.lessons.map((item, index) => (
+                  <Card key={item._id}>
+                    <Grid container>
+                      <Grid item xs={1}>
+                        <Box padding="1rem">
+                          <Avatar className={classes.avcolor}>
+                            {index + 1}
+                          </Avatar>
+                        </Box>
+                      </Grid>
+                      <Grid item xs={10}>
+                        <CardContent>
+                          <Typography>{item.title}</Typography>
+                          <span>{item.content}</span>
+                        </CardContent>
+                      </Grid>
+                      <Grid item xs={1}>
+                        <Box padding="1rem">
+                          <DragIndicatorIcon />
+                        </Box>
+                      </Grid>
+                    </Grid>
+                  </Card>
+                ))}
+              </DraggableList>
+            </div>
 
-        <Container>
-          <DragDropContext onDragEnd={onDragEnd}>
-            <Droppable droppableId="droppable">
-              {(provided) => (
-                <div {...provided.droppableProps} ref={provided.innerRef}>
-                  {values &&
-                    values.lessons?.map((item, index) => (
-                      <Draggable
-                        key={item._id}
-                        draggableId={item._id}
-                        index={index}
-                      >
-                        {(provided, snapshot) => (
-                          <ListItemCard
-                            provided={provided}
-                            snapshot={snapshot}
-                            item={item}
-                            index={index}
-                          />
-                        )}
-                      </Draggable>
-                    ))}
-                </div>
-              )}
-            </Droppable>
-          </DragDropContext>
-        </Container>
-      </div>
+            {/* </Container> */}
+          </div>
+        </>
+      )}
     </>
   )
 }
