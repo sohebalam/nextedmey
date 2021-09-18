@@ -234,8 +234,8 @@ export const update = async (req, res) => {
   try {
     const { slug } = req.query
     // console.log(slug)
+
     const course = await Course.findOne({ slug }).exec()
-    // console.log("course", course)
 
     if (req.user._id != course.instructor) {
       return res.status(400).json({ message: "Unathorized" })
@@ -253,32 +253,42 @@ export const update = async (req, res) => {
 }
 
 export const removeLesson = async (req, res) => {
-  console.log(req.query, req.body)
-  return
   try {
     const { slug, lessonId } = req.query
+    console.log(lessonId)
+
     const course = await Course.findOne({ slug }).exec()
     if (req.user._id != course.instructor) {
-      return res.status(400).json({ message: "Unathorized" })
+      return res.status(400).send("Unauthorized")
     }
 
-    const updated = await Course.findByIdAndUpdate(course._id, {
+    const deletedlesson = await Course.findByIdAndUpdate(course._id, {
       $pull: { lessons: { _id: lessonId } },
     }).exec()
 
-    res.json({ ok: true })
-  } catch (error) {}
+    res.json({ ok: true, deletedlesson })
+  } catch (error) {
+    console.log(error)
+  }
 }
 
 export const updateLesson = async (req, res) => {
-  console.log(req.query, req.body)
-  return
+  // console.log(req.query, req.body)
+  // return
   try {
     const { slug } = req.query
-    const { title, _id, content, video, free_preview } = req.body
+    console.log(slug)
+    const { title, _id, description, video, free_preview } = req.body
 
     const course = await Course.findOne({ slug }).select("instructor").exec()
-    // console.log(course.instructor._id)
+    console.log(
+      course.instructor._id,
+      title,
+      _id,
+      description
+      // video,
+      // free_preview
+    )
 
     if (req.user._id != course.instructor._id) {
       return res.status(400).json({ message: "Unathorized" })
@@ -289,9 +299,9 @@ export const updateLesson = async (req, res) => {
       {
         $set: {
           "lessons.$.title": title,
-          "lessons.$.content": content,
-          "lessons.$.video": video,
-          "lessons.$.free_preview": free_preview,
+          "lessons.$.content": description,
+          // "lessons.$.video": video,
+          // "lessons.$.free_preview": free_preview,
         },
       },
       { new: true }

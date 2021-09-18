@@ -1,7 +1,7 @@
 import nc from "next-connect"
 import connectDB from "../../../connectDB"
 // import cors from "cors"
-import { readCourse, updateLesson } from "../../../controllers/courseCont"
+import { readCourse, update } from "../../../controllers/courseCont"
 import { CorsNext } from "../../../middlewares/mid"
 
 import onError from "../../../middlewares/errors"
@@ -13,6 +13,6 @@ const router = nc({ onError })
 connectDB()
 
 router.use(isAuthenticated, isInstructor).get(readCourse)
-router.use(isAuthenticated, isInstructor).put(updateLesson)
+router.use(isAuthenticated, isInstructor).put(update)
 
 export default router

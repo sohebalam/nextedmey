@@ -3,7 +3,7 @@ import UpdateCourse from "../../../../../components/forms/UpdateCourse"
 import Resizer from "react-image-file-resizer"
 import axios from "axios"
 import { useRouter } from "next/router"
-import { List } from "@material-ui/icons"
+// import { List } from "@material-ui/icons"
 import {
   ListItemAvatar,
   makeStyles,
@@ -20,6 +20,10 @@ import {
 // import ListItemCard from "../../../../../components/drag/ListItem"
 import DragIndicatorIcon from "@material-ui/icons/DragIndicator"
 import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline"
+import { List } from "antd"
+import DraggableList from "react-draggable-lists"
+// fake data generator
+const { Item } = List
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -48,6 +52,14 @@ const EditCourse = () => {
     loading: false,
     lessons: [],
   })
+
+  const [todoState, setTodoState] = useState(values.lessons)
+
+  function swap(dragIndex, dropIndex) {
+    let swappedTodos = swapArrayPositions(todoState, dragIndex, dropIndex)
+
+    setTodoState([...swappedTodos])
+  }
 
   const [image, setImage] = useState("")
 
@@ -200,10 +212,10 @@ const EditCourse = () => {
     // toast("Lessons rearranged")
   }
 
-  const dragOver = async (e) => {
-    e.preventDefault()
-    e.dataTransfer.dropEffect = "move"
-  }
+  // const dragOver = async (e) => {
+  //   e.preventDefault()
+  //   e.dataTransfer.dropEffect = "move"
+  // }
   const classes = useStyles()
 
   return (
@@ -223,7 +235,62 @@ const EditCourse = () => {
           </div>
           <div>
             <div style={{ width: 500, margin: "0 auto" }}>
-              {values &&
+              <List
+                onDragOver={(e) => e.preventDefault()}
+                itemLayout="horizontal"
+                dataSource={values && values.lessons}
+                renderItem={(item, index) => (
+                  <Item
+                    draggable
+                    onDragStart={(e) => handleDrag(e, index)}
+                    onDrop={(e) => handleDrop(e, index)}
+                  >
+                    {/* <DraggableList width={500} height={100} rowSize={1}> */}
+                    <Card style={{ marginBottom: "0.25rem" }}>
+                      <Grid container>
+                        <Grid item xs={2}>
+                          <Box padding="1rem">
+                            <Avatar className={classes.avcolor}>
+                              {index + 1}
+                            </Avatar>
+                          </Box>
+                        </Grid>
+                        <Grid item xs={7}>
+                          <CardContent>
+                            <Typography>{item?.title}</Typography>
+                            <span>{item?.content}</span>
+                          </CardContent>
+                        </Grid>
+                        <Grid item xs={2}>
+                          <Box
+                            padding="1rem"
+                            onClick={() => handleDelete(index)}
+                          >
+                            <DeleteOutlineIcon
+                              style={{ marginLeft: "0.5rem" }}
+                            />
+                            <Typography variant="body1">Delete</Typography>
+                          </Box>
+                        </Grid>
+                        <Grid item xs={1}>
+                          <Box padding="1rem">
+                            <DragIndicatorIcon />
+                          </Box>
+                        </Grid>
+                      </Grid>
+                    </Card>
+                    {/* </DraggableList> */}
+
+                    {/* <DeleteOutlined
+                      onClick={() => handleDelete(index)}
+                      className="text-danger float-right"
+                    /> */}
+                  </Item>
+                )}
+              ></List>
+              {/* </Reorder> */}
+
+              {/* {values &&
                 values?.lessons.map((item, index) => (
                   <div
                     key={item._id}
@@ -268,7 +335,7 @@ const EditCourse = () => {
                       </Grid>
                     </Card>
                   </div>
-                ))}
+                ))} */}
             </div>
 
             {/* </Container> */}
