@@ -22,7 +22,6 @@ const UploadButton = () => {
         accept="video/*"
         className={classes.input}
         id="icon-button-file"
-        fullWidth={true}
         multiple
         // onChange={this.handleImageChange}
         type="file"
@@ -33,6 +32,7 @@ const UploadButton = () => {
           aria-label="upload"
           fullWidth={true}
           variant="outlined"
+          color="primary"
           //   className={classes.button}
         >
           Upload Video

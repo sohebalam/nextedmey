@@ -15,6 +15,12 @@ import {
   Card,
   Typography,
   ListItem,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+  Button,
 } from "@material-ui/core"
 // import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd"
 // import ListItemCard from "../../../../../components/drag/ListItem"
@@ -22,6 +28,7 @@ import DragIndicatorIcon from "@material-ui/icons/DragIndicator"
 import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline"
 import { List } from "antd"
 import DraggableList from "react-draggable-lists"
+import UpdateLessonForm from "../../../../../components/forms/UpdateLesson"
 // fake data generator
 const { Item } = List
 
@@ -52,16 +59,16 @@ const EditCourse = () => {
     loading: false,
     lessons: [],
   })
-
-  const [todoState, setTodoState] = useState(values.lessons)
-
-  function swap(dragIndex, dropIndex) {
-    let swappedTodos = swapArrayPositions(todoState, dragIndex, dropIndex)
-
-    setTodoState([...swappedTodos])
-  }
-
+  const [course, setCourse] = useState({})
+  const [current, setCurrent] = useState({})
+  const [visible, setVisible] = useState(false)
+  const [uploadVideoButtonText, setUploadVideoButtonText] =
+    useState("Upload Video")
   const [image, setImage] = useState("")
+  const [uploadButtonText, setUploadButtonText] = useState("Upload Video")
+
+  const [progress, setProgress] = useState(0)
+  const [uploading, setUploading] = useState(false)
 
   const handleChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value })
@@ -115,7 +122,7 @@ const EditCourse = () => {
     e.preventDefault()
     // console.log(e)
     try {
-      console.log(values)
+      // console.log(values)
       var strNum = values.price
       strNum = strNum.toString().replace("£", "")
 
@@ -207,15 +214,76 @@ const EditCourse = () => {
       ...values,
       image,
     })
-
-    // console.log("Lessons arrange", data)
-    // toast("Lessons rearranged")
   }
 
-  // const dragOver = async (e) => {
-  //   e.preventDefault()
-  //   e.dataTransfer.dropEffect = "move"
-  // }
+  const handelVideo = async (e) => {
+    const file = e.target.files[0]
+    setUploadButtonText(file.name)
+    console.log(file.name)
+
+    if (current.video && current.video.Location) {
+      const res = await axios.post(
+        `/api/course/video/remove/${values.instructor._id}`,
+        current.video
+      )
+      console.log("remove", res)
+    }
+
+    try {
+      const file = e.target.files[0]
+      setUploadButtonText(file.name)
+      setUploading(true)
+      console.log(file.name)
+      const formData = new FormData()
+      formData.append("video", file)
+
+      // videoData.append("video", file)
+
+      console.log(formData)
+
+      let instructorId = values.instructor._id
+
+      const { data } = await axios.post(
+        `/api/course/video/${instructorId}`,
+        formData,
+        {
+          onUploadProgress: (e) =>
+            setProgress(Math.round((100 * e.loaded) / e.total)),
+        }
+      )
+
+      console.log(data)
+      setValues({ ...values, video: data })
+      setUploading(false)
+      // toast("Video Upload Success")
+    } catch (error) {
+      console.log(error)
+      setUploading(false)
+      // toast("Video Upload Failed")
+    }
+  }
+  const handelUpdateLesson = async (e) => {
+    e.preventDefault()
+
+    console.log(current)
+
+    const { data } = await axios.put(
+      `/api/course/lesson/${slug}/${current._id}`,
+      current
+    )
+    setUploadVideoButtonText("Upload Video")
+    setVisible(false)
+    // toast("Lesson updated")
+    if (data.ok) {
+      let arr = values.lessons
+      const index = arr.findIndex((el) => el._id === current._id)
+      arr[index] = current
+      setValues({ ...values, lessons: arr })
+    }
+
+    // setValues({ ...data })
+  }
+
   const classes = useStyles()
 
   return (
@@ -236,6 +304,7 @@ const EditCourse = () => {
           <div>
             <div style={{ width: 500, margin: "0 auto" }}>
               <List
+                className="draggable"
                 onDragOver={(e) => e.preventDefault()}
                 itemLayout="horizontal"
                 dataSource={values && values.lessons}
@@ -245,8 +314,13 @@ const EditCourse = () => {
                     onDragStart={(e) => handleDrag(e, index)}
                     onDrop={(e) => handleDrop(e, index)}
                   >
-                    {/* <DraggableList width={500} height={100} rowSize={1}> */}
-                    <Card style={{ marginBottom: "0.25rem" }}>
+                    <Card
+                      style={{ marginBottom: "0.25rem" }}
+                      onClick={() => {
+                        setVisible(true)
+                        setCurrent(item)
+                      }}
+                    >
                       <Grid container>
                         <Grid item xs={2}>
                           <Box padding="1rem">
@@ -279,66 +353,25 @@ const EditCourse = () => {
                         </Grid>
                       </Grid>
                     </Card>
-                    {/* </DraggableList> */}
-
-                    {/* <DeleteOutlined
-                      onClick={() => handleDelete(index)}
-                      className="text-danger float-right"
-                    /> */}
                   </Item>
                 )}
               ></List>
-              {/* </Reorder> */}
-
-              {/* {values &&
-                values?.lessons.map((item, index) => (
-                  <div
-                    key={item._id}
-                    className="draggable"
-                    draggable
-                    onDragOver={dragOver}
-                    onDrop={(e) => handleDrop(e, index)}
-                    onDrag={(e) => handleDrag(e, index)}
-                    style={{ marginBottom: "0.25rem" }}
-                  >
-                    <Card>
-                      <Grid container>
-                        <Grid item xs={1}>
-                          <Box padding="1rem">
-                            <Avatar className={classes.avcolor}>
-                              {index + 1}
-                            </Avatar>
-                          </Box>
-                        </Grid>
-                        <Grid item xs={8}>
-                          <CardContent>
-                            <Typography>{item?.title}</Typography>
-                            <span>{item?.content}</span>
-                          </CardContent>
-                        </Grid>
-                        <Grid item xs={2}>
-                          <Box
-                            padding="1rem"
-                            onClick={() => handleDelete(index)}
-                          >
-                            <DeleteOutlineIcon
-                              style={{ marginLeft: "0.5rem" }}
-                            />
-                            <Typography variant="body1">Delete</Typography>
-                          </Box>
-                        </Grid>
-                        <Grid item xs={1}>
-                          <Box padding="1rem">
-                            <DragIndicatorIcon />
-                          </Box>
-                        </Grid>
-                      </Grid>
-                    </Card>
-                  </div>
-                ))} */}
             </div>
-
-            {/* </Container> */}
+            <Dialog open={visible}>
+              <DialogTitle id="update lesson">Update Lesson</DialogTitle>
+              <DialogContent>
+                <UpdateLessonForm
+                  current={current}
+                  setCurrent={setCurrent}
+                  handelVideo={handelVideo}
+                  handelUpdateLesson={handelUpdateLesson}
+                  uploadVideoButtonText={uploadVideoButtonText}
+                  progress={progress}
+                  uploading={uploading}
+                />
+              </DialogContent>
+              <Button onClick={() => setVisible(false)}>Close</Button>
+            </Dialog>
           </div>
         </>
       )}

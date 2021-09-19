@@ -9,6 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@emotion/react": "^11.4.1",
+    "@emotion/styled": "^11.3.0",
     "@material-ui/core": "^4.12.3",
     "@material-ui/icons": "^4.11.2",
     "@material-ui/lab": "^4.0.0-alpha.60",
@@ -38,6 +40,7 @@
     "react": "17.0.2",
     "react-animate-reorder": "^1.0.1",
     "react-beautiful-dnd": "^13.1.0",
+    "react-beautiful-dnd-next": "^11.0.5",
     "react-dnd": "^14.0.3",
     "react-dnd-html5-backend": "^14.0.1",
     "react-dom": "^17.0.2",
@@ -51,6 +54,7 @@
     "react-markdown": "^7.0.1",
     "react-movable": "^2.5.4",
     "react-nestable": "^2.0.0",
+    "react-player": "^2.9.0",
     "react-redux": "^7.2.4",
     "react-reorder": "^3.0.0-alpha.7",
     "react-smooth-dnd": "^0.11.1",

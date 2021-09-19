@@ -278,17 +278,10 @@ export const updateLesson = async (req, res) => {
   try {
     const { slug } = req.query
     console.log(slug)
-    const { title, _id, description, video, free_preview } = req.body
+    const { title, _id, content, video, free_preview } = req.body
 
     const course = await Course.findOne({ slug }).select("instructor").exec()
-    console.log(
-      course.instructor._id,
-      title,
-      _id,
-      description
-      // video,
-      // free_preview
-    )
+    console.log(course.instructor._id, title, _id, content, video, free_preview)
 
     if (req.user._id != course.instructor._id) {
       return res.status(400).json({ message: "Unathorized" })
@@ -299,9 +292,9 @@ export const updateLesson = async (req, res) => {
       {
         $set: {
           "lessons.$.title": title,
-          "lessons.$.content": description,
-          // "lessons.$.video": video,
-          // "lessons.$.free_preview": free_preview,
+          "lessons.$.content": content,
+          "lessons.$.video": video,
+          "lessons.$.free_preview": free_preview,
         },
       },
       { new: true }
