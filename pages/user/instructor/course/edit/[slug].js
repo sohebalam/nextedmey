@@ -1,4 +1,4 @@
-import { useState } from "react"
+import React, { useState } from "react"
 import UpdateCourse from "../../../../../components/forms/UpdateCourse"
 import Resizer from "react-image-file-resizer"
 import axios from "axios"
@@ -29,7 +29,9 @@ import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline"
 import { List } from "antd"
 import DraggableList from "react-draggable-lists"
 import UpdateLessonForm from "../../../../../components/forms/UpdateLesson"
-// fake data generator
+// import { ListItem, List } from "@material-ui/core"
+import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd-next"
+
 const { Item } = List
 
 const useStyles = makeStyles((theme) => ({
@@ -59,6 +61,15 @@ const EditCourse = () => {
     loading: false,
     lessons: [],
   })
+
+  // const initial = values.lessons
+
+  // console.log("initial", initial)
+
+  // const [datas, setDatas] = useState(initial)
+
+  // console.log(values.lessons, datas)
+
   const [course, setCourse] = useState({})
   const [current, setCurrent] = useState({})
   const [visible, setVisible] = useState(false)
@@ -76,6 +87,24 @@ const EditCourse = () => {
   const router = useRouter()
 
   const { slug } = router.query
+
+  const onDragEnd = (result, provided) => {
+    if (!result) {
+      return
+    }
+    const { destination, source } = result
+
+    if (destination.index === source.index) {
+      return
+    }
+    setDatas((prev) => {
+      const sourceData = datas[source.index]
+      let newDatas = prev
+      newDatas.splice(source.index, 1)
+      newDatas.splice(destination.index, 0, sourceData)
+      return newDatas
+    })
+  }
 
   const handleImage = (e) => {
     let file = e.target.files[0]
@@ -285,6 +314,15 @@ const EditCourse = () => {
   }
 
   const classes = useStyles()
+
+  const childrenToRender = values.lessons.map((item, i) => (
+    <div key={item._id}>
+      <Card>
+        <h1>{item.title}</h1>
+        <p>{item.content}</p>
+      </Card>
+    </div>
+  ))
 
   return (
     <>

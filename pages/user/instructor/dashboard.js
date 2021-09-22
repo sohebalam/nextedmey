@@ -17,6 +17,8 @@ const InstructorIndex = () => {
     setCourses(data)
   }
 
+  console.log(courses)
+
   return (
     <InstructorRoute>
       <h1 className="jumbotron text-center square">Instructor Dashboard</h1>

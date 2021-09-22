@@ -310,7 +310,7 @@ export const updateLesson = async (req, res) => {
 
 export const publishCourse = async (req, res) => {
   try {
-    const { courseId } = req.params
+    const { courseId } = req.query
     const course = await Course.findById(courseId).select("instructor").exec()
     if (req.user._id != course.instructor._id) {
       return res.status(400).json({ message: "Unathorized" })
@@ -331,7 +331,7 @@ export const publishCourse = async (req, res) => {
 
 export const unpublishCourse = async (req, res) => {
   try {
-    const { courseId } = req.params
+    const { courseId } = req.query
     const course = await Course.findById(courseId).select("instructor").exec()
     if (req.user._id != course.instructor._id) {
       return res.status(400).json({ message: "Unathorized" })

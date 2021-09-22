@@ -1,10 +1,13 @@
 import React from "react"
 import Document, { Html, Main, NextScript, Head } from "next/document"
 import { ServerStyleSheets } from "@material-ui/core/styles"
-
-var AnimateReorder = require("react-animate-reorder")
+import { resetServerContext } from "react-beautiful-dnd"
 
 export default class MyDocument extends Document {
+  static async getInitialProps(ctx) {
+    const initialProps = await Document.getInitialProps(ctx)
+    return { ...initialProps }
+  }
   render() {
     return (
       <Html lang="en">
@@ -32,10 +35,12 @@ MyDocument.getInitialProps = async (ctx) => {
     })
 
   const initialProps = await Document.getInitialProps(ctx)
+  resetServerContext()
 
   return {
     ...initialProps,
     // Styles fragment is rendered after the app and page rendering finish.
+
     styles: [
       ...React.Children.toArray(initialProps.styles),
       sheets.getStyleElement(),

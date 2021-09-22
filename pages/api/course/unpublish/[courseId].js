@@ -1,19 +1,16 @@
 import nc from "next-connect"
 import connectDB from "../../../../connectDB"
-import formidable from "formidable"
-// import { readCourse } from "../../../controllers/courseCont"
+import { unpublishCourse } from "../../../../controllers/courseCont"
 
 import onError from "../../../../middlewares/errors"
-
 import { isAuthenticated, isInstructor } from "../../../../middlewares/auth"
-import { addLesson, readCourse } from "../../../../controllers/courseCont"
 
 const router = nc({ onError })
 
 connectDB()
 
-// console.log(req.method)
+// console.log("here")
 
-router.use(isAuthenticated, isInstructor).post(addLesson)
+router.use(isAuthenticated, isInstructor).put(unpublishCourse)
 
 export default router

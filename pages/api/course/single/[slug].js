@@ -14,6 +14,6 @@ connectDB()
 
 // console.log(req.method)
 
-router.use(isAuthenticated, isInstructor).post(addLesson)
+router.get(readCourse)
 
 export default router

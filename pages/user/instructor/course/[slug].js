@@ -15,6 +15,8 @@ import {
   DialogActions,
   IconButton,
   ListItemAvatar,
+  Snackbar,
+  Alert,
 } from "@material-ui/core"
 // import { CheckOutlined, UploadOutlined } from "@ant-design/icons"
 import Item from "@material-ui/icons"
@@ -151,34 +153,37 @@ const CourseView = () => {
     }
   }
 
-  //   const handlePublish = async (e, courseId) => {
-  //     try {
-  //       let answer = window.confirm(
-  //         "One you publish your course, it will be live in the marketplace for users to enroll"
-  //       )
-  //       if (!answer) return
+  const handlePublish = async (e, courseId) => {
+    try {
+      let answer = window.confirm(
+        "One you publish your course, it will be live in the marketplace for users to enroll"
+      )
+      if (!answer) return
 
-  //       const { data } = await axios.put(`/api/course/publish/${courseId}`)
-  //       toast(" course is live")
-  //       setCourse(data)
-  //     } catch (error) {
-  //       toast("Publish failed, course is not live")
-  //     }
-  //   }
+      const { data } = await axios.put(`/api/course/publish/${courseId}`)
+      // toast(" course is live")
+      console.log(" course is live")
 
-  //   const handleUnpublish = async (e, courseId) => {
-  //     try {
-  //       let answer = window.confirm(
-  //         "One you Un-Publish your course, it will  not be live in the marketplace for users to enroll"
-  //       )
-  //       if (!answer) return
-  //       const { data } = await axios.put(`/api/course/unpublish/${courseId}`)
-  //       toast(" course is not live")
-  //       setCourse(data)
-  //     } catch (error) {
-  //       toast("UnPublish failed, course is live")
-  //     }
-  //   }
+      setCourse(data)
+    } catch (error) {
+      // toast("Publish failed, course is not live")
+    }
+  }
+
+  const handleUnpublish = async (e, courseId) => {
+    try {
+      let answer = window.confirm(
+        "One you Un-Publish your course, it will  not be live in the marketplace for users to enroll"
+      )
+      if (!answer) return
+      const { data } = await axios.put(`/api/course/unpublish/${courseId}`)
+      // toast(" course is not live")
+      console.log(" course is not live")
+      setCourse(data)
+    } catch (error) {
+      // toast("UnPublish failed, course is live")
+    }
+  }
 
   return (
     <InstructorRoute>
@@ -217,7 +222,7 @@ const CourseView = () => {
                   ) : course.published ? (
                     <Tooltip title="Unpublish">
                       <HighlightOffIcon
-                        // onClick={handlePublish}
+                        onClick={handlePublish}
                         onClick={(e) => handleUnpublish(e, course._id)}
                         className="h5 pointer text-danger"
                       />

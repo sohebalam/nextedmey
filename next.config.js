@@ -22,4 +22,7 @@ module.exports = {
   },
 
   crossOrigin: "anonymous",
+  image: {
+    domains: ["amazonaws.com", "ofu-bucket.s3.eu-west-2.amazonaws.com"],
+  },
 }
