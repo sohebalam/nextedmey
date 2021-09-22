@@ -125,10 +125,10 @@ const SingleCourseJumbotron = ({
               </div>
             ) : (
               <Button
-                style={{ padding: "2rem" }}
-                className="mb-3 mt-2"
+                variant="outlined"
+                className="mb-3 mt-4"
                 type="danger"
-                size="large"
+                fullWidth
                 disabled={loading}
                 onClick={paid ? handelPaidEnroll : handelFreeEnroll}
               >

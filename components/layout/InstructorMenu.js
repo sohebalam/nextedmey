@@ -81,10 +81,6 @@ const InstructorMenu = () => {
           <MenuItem onClick={handleClose}>Instructor Dashboard</MenuItem>
         </Link>
 
-        <Link href="/user/instructor/course/edit/${slug}">
-          <MenuItem onClick={handleClose}>Update Course</MenuItem>
-        </Link>
-
         <Link>
           <MenuItem onClick={handleClose} onClick={handleSignout}>
             SignOut

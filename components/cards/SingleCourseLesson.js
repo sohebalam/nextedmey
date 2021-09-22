@@ -4,6 +4,7 @@ import {
   ListItem,
   ListItemAvatar,
   makeStyles,
+  Button,
 } from "@material-ui/core"
 import { Box } from "@mui/system"
 import { List } from "antd"
@@ -38,7 +39,7 @@ const SingleCourseLesson = ({
                     <Avatar className={classes.avcolor}>{index + 1}</Avatar>
                   </ListItemAvatar>
                   {item.title}
-                  <Box style={{ marginLeft: "1rem" }}>
+                  <Box padding="1rem">
                     {item.video && item.video !== null && item.free_preview && (
                       <span
                         className="text-primary pointer"
@@ -47,7 +48,7 @@ const SingleCourseLesson = ({
                             setShowModal(!showModal)
                         }}
                       >
-                        Preview
+                        <Button>Preview</Button>
                       </span>
                     )}
                   </Box>

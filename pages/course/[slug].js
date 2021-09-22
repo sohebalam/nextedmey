@@ -21,10 +21,6 @@ const Course = ({ course }) => {
 
   const user = dbUser
 
-  //   const {
-  //     state: { user },
-  //   } = useContext(Context)
-
   const handelPaidEnroll = async () => {
     try {
       setLoading(true)
@@ -34,11 +30,13 @@ const Course = ({ course }) => {
       if (enrolled.status) {
         return router.push(`/user/course/${enrolled.course.slug}`)
       }
-      const { data } = await axios.post(`/api/paid-enrollment/${course._id}`)
+      const { data } = await axios.post(
+        `/api/course/paidEnrollment/${course._id}`
+      )
       const stripe = await loadStripe(process.env.NEXT_PUBLIC_STRIPE_KEY)
       stripe.redirectToCheckout({ sessionId: data })
     } catch (error) {
-      toast("Enrollment failed please try again")
+      // toast("Enrollment failed please try again")
       console.log(error)
       setLoading(false)
     }
@@ -55,12 +53,14 @@ const Course = ({ course }) => {
       }
 
       setLoading(true)
-      const { data } = await axios.post(`/api/free-enrollment/${course._id}`)
-      toast(data.message)
+      const { data } = await axios.post(
+        `/api/course/freeEnrollment/${course._id}`
+      )
+      // toast(data.message)
       setLoading(false)
       return router.push(`/user/course/${data.course.slug}`)
     } catch (error) {
-      toast("Enrollment failed, try again4")
+      // toast("Enrollment failed, try again4")
       console.log(error)
       setLoading(false)
     }
@@ -71,7 +71,9 @@ const Course = ({ course }) => {
   }, [user, course, enrolled.status])
 
   const checkEnrollment = async () => {
-    const { data } = await axios.get(`/api/check-enrollment/${course._id}`)
+    const { data } = await axios.get(
+      `/api/course/checkEnrollment/${course._id}`
+    )
     console.log("enroll", data)
     setEnrolled(data)
   }
