@@ -1,6 +1,18 @@
-import { List, Avatar } from "antd"
+import {
+  Grid,
+  Avatar,
+  ListItem,
+  ListItemAvatar,
+  makeStyles,
+} from "@material-ui/core"
+import { Box } from "@mui/system"
+import { List } from "antd"
 
-const { Item } = List
+const useStyles = makeStyles((theme) => ({
+  avcolor: {
+    backgroundColor: theme.palette.primary.main,
+  },
+}))
 
 const SingleCourseLesson = ({
   lessons,
@@ -8,38 +20,44 @@ const SingleCourseLesson = ({
   showModal,
   setShowModal,
 }) => {
+  const classes = useStyles()
   return (
-    <div className="container">
+    <Grid container>
       <hr />
-      <div className="row">
-        <div className="col lesson-list">
+      <Grid item>
+        <Box>
           {lessons && <h4>{lessons.length} Lessons</h4>}
           <hr />
           <List
             itemLayout="horizontal"
             dataSource={lessons}
             renderItem={(item, index) => (
-              <Item>
-                <Item.Meta
-                  avatar={<Avatar>{index + 1}</Avatar>}
-                  title={item.title}
-                />
-                {item.video && item.video !== null && item.free_preview && (
-                  <span
-                    className="text-primary pointer"
-                    onClick={() => {
-                      setPreview(item.video.Location), setShowModal(!showModal)
-                    }}
-                  >
-                    Preview
-                  </span>
-                )}
-              </Item>
+              <Grid container key={item._id}>
+                <ListItem>
+                  <ListItemAvatar>
+                    <Avatar className={classes.avcolor}>{index + 1}</Avatar>
+                  </ListItemAvatar>
+                  {item.title}
+                  <Box style={{ marginLeft: "1rem" }}>
+                    {item.video && item.video !== null && item.free_preview && (
+                      <span
+                        className="text-primary pointer"
+                        onClick={() => {
+                          setPreview(item.video.Location),
+                            setShowModal(!showModal)
+                        }}
+                      >
+                        Preview
+                      </span>
+                    )}
+                  </Box>
+                </ListItem>
+              </Grid>
             )}
           />
-        </div>
-      </div>
-    </div>
+        </Box>
+      </Grid>
+    </Grid>
   )
 }
 

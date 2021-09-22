@@ -1,13 +1,12 @@
-import { Badge, Modal } from "antd"
 import ReactPlayer from "react-player"
+import Dialog from "@mui/material/Dialog"
+import { DialogActions, DialogTitle, Button } from "@material-ui/core"
+import CancelIcon from "@mui/icons-material/Cancel"
 
 const PreviewModal = ({ showModal, setShowModal, preview }) => {
   return (
-    <Modal
-      title="Course Preview"
-      visible={showModal}
-      onCancel={() => setShowModal(!showModal)}
-    >
+    <Dialog open={showModal} onClose={() => setShowModal(!showModal)}>
+      <DialogTitle>{"Course Preview"}</DialogTitle>
       <div className="wrapper">
         <ReactPlayer
           url={preview}
@@ -17,7 +16,13 @@ const PreviewModal = ({ showModal, setShowModal, preview }) => {
           height="100%"
         />{" "}
       </div>
-    </Modal>
+      <DialogActions>
+        <Button onClick={() => setShowModal(!showModal)}>
+          <CancelIcon style={{ marginRight: "0.25rem" }} />
+          Close
+        </Button>
+      </DialogActions>
+    </Dialog>
   )
 }
 

@@ -57,111 +57,92 @@ const SingleCourseJumbotron = ({
   const classes = useStyles()
   return (
     <Paper className={classes.root}>
-      <Grid
-        container
-        alignItems="center"
-        justifyContent="center"
-        style={{ backgroundColor: "secondary" }}
-      >
-        <Typography
-          component="p"
-          variant="h3"
-          align="center"
-          color="primary"
-          sx={{
-            mb: 10,
-          }}
-        >
-          {/* {subtitle} */}
-        </Typography>
-        <div>
-          <Grid container>
-            <Grid item xs={8}>
-              <Typography
-                variant="h1"
-                align="center"
-                gutterBottom
-                sx={{
-                  color: "secondary.main",
-                  fontWeight: 400,
+      <div>
+        <Grid container style={{ padding: "2rem" }}>
+          <Grid item xs={8}>
+            <Typography
+              variant="h1"
+              align="center"
+              gutterBottom
+              sx={{
+                color: "secondary.main",
+                fontWeight: 400,
+              }}
+            >
+              {title}
+            </Typography>
+            <Box padding="1rem">
+              <Typography variant="body1">
+                {description && description.substring(0, 160)}...
+              </Typography>
+              <Badge
+                count={category}
+                style={{ backgroundColor: "#03a9f4" }}
+                className="pb-4 mr-2"
+              />
+              <Typography variant="body1">
+                Created by {instructor.name}
+              </Typography>
+              <Typography variant="body1">
+                Last updated {new Date(updatedAt).toLocaleString()}
+              </Typography>
+              <Typography variant="h4">
+                {paid
+                  ? currencyFormatter({ amount: price, currency: "gbp" })
+                  : "Free"}
+              </Typography>
+            </Box>
+          </Grid>
+          <Grid item xs={4}>
+            {lessons[0].video && lessons[0].video.Location ? (
+              <div
+                onClick={() => {
+                  setPreview(lessons[0].video.Location)
+                  setShowModal(!showModal)
                 }}
               >
-                {title}
-              </Typography>
-              <Box padding="1rem">
-                <Typography variant="body1">
-                  {description && description.substring(0, 160)}...
-                </Typography>
-                <Badge
-                  count={category}
-                  style={{ backgroundColor: "#03a9f4" }}
-                  className="pb-4 mr-2"
+                <ReactPlayer
+                  className="react-player-div"
+                  url={lessons[0].video.Location}
+                  light={image.Location || "/course.jpg"}
+                  width="100%"
+                  height="225px"
                 />
-                <Typography variant="body1">
-                  Created by {instructor.name}
-                </Typography>
-                <Typography variant="body1">
-                  Last updated {new Date(updatedAt).toLocaleString()}
-                </Typography>
-                <Typography variant="h4">
-                  {paid
-                    ? currencyFormatter({ amount: price, currency: "gbp" })
-                    : "Free"}
-                </Typography>
-              </Box>
-            </Grid>
-            <Grid item xs={4}>
-              {lessons[0].video && lessons[0].video.Location ? (
-                <div
-                  onClick={() => {
-                    setPreview(lessons[0].video.Location)
-                    setShowModal(!showModal)
-                  }}
-                >
-                  <ReactPlayer
-                    className="react-player-div"
-                    url={lessons[0].video.Location}
-                    light={image.Location}
-                    width="100%"
-                    height="225px"
-                  />
-                </div>
-              ) : (
-                <div>
-                  <Image
-                    src={image.Location || "/course.jpg"}
-                    alt={title}
-                    height={200}
-                    width={400}
-                  />
-                </div>
-              )}
-              {loading ? (
-                <div className="d-flex justify-contect-center">
-                  <LoadingOutlined className="h1 text-danger" />
-                </div>
-              ) : (
-                <Button
-                  className="mb-3 mt-2"
-                  type="danger"
-                  block
-                  shape="round"
-                  size="large"
-                  disabled={loading}
-                  onClick={paid ? handelPaidEnroll : handelFreeEnroll}
-                >
-                  <CheckCircleOutlineIcon />
-                  {user
-                    ? enrolled.status
-                      ? "Go to course"
-                      : "Enroll"
-                    : "Login to Enroll"}
-                </Button>
-              )}
-            </Grid>
+              </div>
+            ) : (
+              <div>
+                <Image
+                  src={image.Location || "/course.jpg"}
+                  alt={title}
+                  height={200}
+                  width={400}
+                />
+              </div>
+            )}
+            {loading ? (
+              <div className="d-flex justify-contect-center">
+                <LoadingOutlined className="h1 text-danger" />
+              </div>
+            ) : (
+              <Button
+                style={{ padding: "2rem" }}
+                className="mb-3 mt-2"
+                type="danger"
+                size="large"
+                disabled={loading}
+                onClick={paid ? handelPaidEnroll : handelFreeEnroll}
+              >
+                <CheckCircleOutlineIcon style={{ marginRight: "0.5rem" }} />
+                {user
+                  ? enrolled.status
+                    ? "Go to course"
+                    : "Enroll"
+                  : "Login to Enroll"}
+              </Button>
+            )}
           </Grid>
-        </div>
-      </Grid>
+        </Grid>
+      </div>
     </Paper>
   )
 }
