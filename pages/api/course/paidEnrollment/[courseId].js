@@ -2,8 +2,8 @@ import nc from "next-connect"
 import connectDB from "../../../../connectDB"
 // import cors from "cors"
 import NextCors from "nextjs-cors"
-import { removeImage } from "../../../../controllers/courseCont"
-
+import { paidEnrollment } from "../../../../controllers/courseCont"
+import { isAuthenticated } from "../../../../middlewares/auth"
 import onError from "../../../../middlewares/errors"
 import next from "next"
 
@@ -20,6 +20,6 @@ connectDB()
 // }
 
 // router.use(CorsNext).post(uploadImage)
-router.post(removeImage)
+router.use(isAuthenticated).post(paidEnrollment)
 
 export default router
