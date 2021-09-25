@@ -1,0 +1,55 @@
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.draggable {
+  cursor: move; /* fallback: no `url()` support or images disabled */
+  cursor: grab; /* W3C standards syntax, all modern browser */
+}
+
+.draggable:active {
+  /* cursor: url(images/grabbing.cur); */
+  cursor: grabbing;
+}
+
+ul {
+  list-style-type: none;
+}
+
+.button {
+  position: relative;
+  background: "white";
+  border-radius: 8px;
+  color: palevioletred;
+
+  font-size: 1rem;
+  text-transform: uppercase;
+  font-weight: bold;
+  padding: 10px 0;
+  /* padding: 5px 20px; */
+  width: 100%;
+  height: 35px;
+  z-index: 1;
+  border-radius: 3px;
+  border: 1px solid palevioletred;
+
+  cursor: pointer;
+  text-align: center;
+  display: inline-flex;
+  justify-content: center; /* center the content horizontally */
+  align-items: center; /* center the content vertically */
+  font-family: "Roboto", sans-serif;
+}
