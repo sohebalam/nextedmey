@@ -53,3 +53,7 @@ ul {
   align-items: center; /* center the content vertically */
   font-family: "Roboto", sans-serif;
 }
+
+.pointer {
+  cursor: pointer;
+}

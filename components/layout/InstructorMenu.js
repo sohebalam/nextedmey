@@ -77,9 +77,9 @@ const InstructorMenu = () => {
           </div>
         )}
 
-        <Link href="/user/instructor/dashboard">
+        {/* <Link href="/user/instructor/dashboard">
           <MenuItem onClick={handleClose}>Instructor Dashboard</MenuItem>
-        </Link>
+        </Link> */}
 
         <Link>
           <MenuItem onClick={handleClose} onClick={handleSignout}>
