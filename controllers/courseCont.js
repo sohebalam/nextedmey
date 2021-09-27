@@ -4,7 +4,7 @@ import Course from "../models/courseModel"
 import slugify from "slugify"
 import { readFileSync } from "fs"
 import User from "../models/userModel"
-// import Completed from "../models/completed"
+import Completed from "../models/completeModel"
 const stripe = require("stripe")(process.env.STRIPE_SECRET)
 
 const awsConfig = {
@@ -475,7 +475,8 @@ export const userCourses = async (req, res) => {
 
 export const markCompleted = async (req, res) => {
   const { courseId, lessonId } = req.body
-  // console.log(courseId, lessonId);
+  // console.log(courseId, lessonId)
+
   // find if user with that course is already created
   const existing = await Completed.findOne({
     user: req.user._id,
@@ -517,7 +518,7 @@ export const listCompleted = async (req, res) => {
   }
 }
 
-export const listIncomplete = async (req, res) => {
+export const markIncomplete = async (req, res) => {
   try {
     const { courseId, lessonId } = req.body
 

@@ -80,11 +80,21 @@ function Header() {
       <div component="nav">
         <AppBar position="static" style={{ color: "primary" }}>
           <Toolbar>
+            {/* <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              // onClick={handleDrawerOpen}
+              edge="start"
+              sx={{ mr: 2, ...(open && { display: "none" }) }}
+            >
+              <MenuIcon />
+            </IconButton> */}
             <IconButton aria-label="menu">
               <Link href="/">
                 {<img src="/v3.png" height="40px" alt="logo" />}
               </Link>
             </IconButton>
+
             <Typography variant="h6" className={classes.title}></Typography>
 
             <>
