@@ -104,7 +104,7 @@ const SingleCourseJumbotron = ({
                 <ReactPlayer
                   className="react-player-div"
                   url={lessons[0].video.Location}
-                  light={image.Location || "/course.jpg"}
+                  light={image?.Location || "/course.jpg"}
                   width="100%"
                   height="225px"
                 />

@@ -107,7 +107,8 @@ export const create = async (req, res) => {
 }
 
 export const instructorCourses = async (req, res) => {
-  // console.log(req.method)
+  console.log("instructor", req.method)
+
   try {
     const courses = await Course.find({ instructor: req.user._id })
       .sort({ createdAt: -1 })

@@ -18,13 +18,27 @@ export const isAuthenticated = catchAsyncErrors(async (req, res, next) => {
 })
 
 export const isInstructor = catchAsyncErrors(async (req, res, next) => {
-  const user = await User.findById(req.user._id).exec()
-  if (!user.role.includes("instructor")) {
-    console.log("not instructor")
-    return res.status(403)
+  // console.log(req.user)
+
+  if (req.user.id) {
+    const user = await User.findOne({ socialId: req.user.id }).exec()
+    console.log(user)
+    if (!user.role.includes("instructor")) {
+      console.log("not instructor")
+      return res.status(403)
+    } else {
+      console.log("yes")
+      next()
+    }
   } else {
-    console.log("yes")
-    next()
+    const user = await User.findById(req.user._id).exec()
+    if (!user.role.includes("instructor")) {
+      console.log("not instructor")
+      return res.status(403)
+    } else {
+      console.log("yes")
+      next()
+    }
   }
 })
 

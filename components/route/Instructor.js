@@ -11,7 +11,7 @@ const InstructorRoute = ({ children }) => {
   const profile = useSelector((state) => state.profile)
   const { loading, error, dbUser } = profile
 
-  //   console.log(dbUser)
+  console.log(dbUser)
 
   const dispatch = useDispatch()
   // state
@@ -19,7 +19,7 @@ const InstructorRoute = ({ children }) => {
   // router
   const router = useRouter()
 
-  // console.log(session?.user.role)
+  console.log(session?.user.role)
 
   useEffect(() => {
     if (!dbUser) {
@@ -28,10 +28,10 @@ const InstructorRoute = ({ children }) => {
       }
     }
 
-    if (session && session.user.role !== "instructor") {
+    if (dbUser && dbUser.role !== "instructor") {
       router.push("/")
     }
-  }, [session])
+  }, [dbUser])
 
   return (
     <>
