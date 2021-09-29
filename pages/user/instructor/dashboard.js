@@ -17,7 +17,7 @@ const InstructorIndex = () => {
     setCourses(data)
   }
 
-  console.log(courses)
+  // console.log(courses)
 
   return (
     <InstructorRoute>
@@ -28,7 +28,7 @@ const InstructorIndex = () => {
             <Grid item xs={3}>
               <Avatar
                 style={{ height: "100px", width: "100px" }}
-                src={courses.image ? courses.image.Location : "/course.jpg"}
+                src={course?.image ? course.image.Location : "/course.jpg"}
               />
             </Grid>
             <Grid item xs={6}>

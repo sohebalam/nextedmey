@@ -31,6 +31,7 @@ import Dialog from "@material-ui/core/Dialog"
 import AddLesson from "../../../../components/forms/AddLesson"
 import CloseIcon from "@material-ui/icons/Close"
 import ListItem from "@material-ui/core/ListItem"
+import GroupIcon from "@mui/icons-material/Group"
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -42,6 +43,9 @@ const useStyles = makeStyles((theme) => ({
     top: "-9%",
     backgroundColor: "lightgray",
     color: "primary",
+  },
+  iconColor: {
+    color: "green",
   },
   avcolor: {
     backgroundColor: theme.palette.primary.main,
@@ -60,6 +64,7 @@ const CourseView = () => {
   const [uploading, setUploading] = useState(false)
   const [uploadButtonText, setUploadButtonText] = useState("Upload Video")
   const [progress, setProgress] = useState(0)
+  const [students, setStudents] = useState(0)
 
   const router = useRouter()
   const { slug } = router.query
@@ -72,6 +77,18 @@ const CourseView = () => {
   const loadCourse = async () => {
     const { data } = await axios.get(`/api/course/${slug}`)
     setCourse(data)
+  }
+
+  useEffect(() => {
+    course && studentCount()
+  }, [course])
+
+  const studentCount = async () => {
+    const { data } = await axios.post(`/api/instructor/studentCount`, {
+      courseId: course._id,
+    })
+    // console.log("STUDENT COUNT => ", data.length)
+    setStudents(data.length)
   }
 
   const handleAddLesson = async (e) => {
@@ -207,34 +224,47 @@ const CourseView = () => {
               </Grid>
               <Grid item xs={2}>
                 <div>
-                  <Tooltip title="Edit">
-                    <EditIcon
-                      onClick={() =>
-                        router.push(`/user/instructor/course/edit/${slug}`)
-                      }
-                      className="h5 pointer text-warning mr-4"
-                    />
-                  </Tooltip>
-                  {course.lessons && course.lessons.length < 5 ? (
-                    <Tooltip title="Min 5 lessons required to publish">
-                      <HelpOutlineIcon className="h5 pointer text-danger" />
-                    </Tooltip>
-                  ) : course.published ? (
-                    <Tooltip title="Unpublish">
-                      <HighlightOffIcon
-                        onClick={handlePublish}
-                        onClick={(e) => handleUnpublish(e, course._id)}
-                        className="h5 pointer text-danger"
+                  <Box padding="0.5rem">
+                    <Tooltip
+                      title={`${students} Enrolled`}
+                      style={{ marginBottom: "0.5rem", marginRight: "1rem" }}
+                    >
+                      <GroupIcon
+                        className="h5 pointer mr-4"
+                        className={classes.iconColor}
                       />
                     </Tooltip>
-                  ) : (
-                    <Tooltip title="Publish">
-                      <CheckCircleOutline
-                        onClick={(e) => handlePublish(e, course._id)}
-                        className="h5 pointer text-success"
+
+                    <Tooltip title="Edit" style={{ marginRight: "1rem" }}>
+                      <EditIcon
+                        onClick={() =>
+                          router.push(`/user/instructor/course/edit/${slug}`)
+                        }
+                        className="h5 pointer text-warning mr-4"
                       />
                     </Tooltip>
-                  )}
+
+                    {course.lessons && course.lessons.length < 5 ? (
+                      <Tooltip title="Min 5 lessons required to publish">
+                        <HelpOutlineIcon className="h5 pointer text-danger" />
+                      </Tooltip>
+                    ) : course.published ? (
+                      <Tooltip title="Unpublish">
+                        <HighlightOffIcon
+                          onClick={handlePublish}
+                          onClick={(e) => handleUnpublish(e, course._id)}
+                          className="h5 pointer text-danger"
+                        />
+                      </Tooltip>
+                    ) : (
+                      <Tooltip title="Publish">
+                        <CheckCircleOutline
+                          onClick={(e) => handlePublish(e, course._id)}
+                          className="h5 pointer text-success"
+                        />
+                      </Tooltip>
+                    )}
+                  </Box>
                 </div>
               </Grid>
             </Grid>

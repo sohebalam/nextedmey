@@ -5,6 +5,8 @@ import styles from "../styles/Home.module.css"
 import Hero from "../components/layout/Hero"
 import axios from "axios"
 import CourseCard from "../components/cards/CourseCard"
+import { Grid, Paper } from "@material-ui/core"
+import { Box } from "@mui/system"
 
 const Home = ({ courses }) => {
   // const [courses, setCourses] = useState([])
@@ -21,17 +23,25 @@ const Home = ({ courses }) => {
 
   return (
     <div>
-      <Hero
-        imgSrc="/home-hero.jpg"
-        imgAlt="satified woman eating in restaurant"
-        title="OpenFreeUni"
-        subtitle="Learn for Free!"
-      />
-      {courses.map((course) => (
-        <div key={course._id} className="col-md-4">
-          <CourseCard course={course} />
-        </div>
-      ))}
+      {/* <Box mb="3rem"> */}
+      <Paper>
+        <Hero
+          imgSrc="/home-hero.jpg"
+          imgAlt="satified woman eating in restaurant"
+          title="OpenFreeUni"
+          subtitle="Learn for Free!"
+        />
+      </Paper>
+      {/* </Box> */}
+      <Grid container>
+        {courses.map((course) => (
+          <Grid item key={course._id} xs={4}>
+            <Box padding="0.5rem">
+              <CourseCard course={course} />
+            </Box>
+          </Grid>
+        ))}
+      </Grid>
     </div>
   )
 }

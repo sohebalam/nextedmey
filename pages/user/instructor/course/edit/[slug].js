@@ -250,7 +250,7 @@ const EditCourse = () => {
     setUploadButtonText(file.name)
     console.log(file.name)
 
-    if (current.video && current.video.Location) {
+    if (current.video && current.video?.Location) {
       const res = await axios.post(
         `/api/course/video/remove/${values.instructor._id}`,
         current.video

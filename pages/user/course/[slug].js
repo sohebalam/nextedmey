@@ -271,14 +271,16 @@ export default function MiniDrawer() {
                         </Grid>
                       </Grid>
 
-                      <ReactPlayer
-                        className="player"
-                        url={course.lessons[clicked].video.Location}
-                        width="100%"
-                        height="100%"
-                        controls
-                        onEnded={() => markCompleted()}
-                      />
+                      <Box>
+                        <ReactPlayer
+                          className="player"
+                          url={course.lessons[clicked].video.Location}
+                          width="100%"
+                          height="100%"
+                          controls
+                          onEnded={() => markCompleted()}
+                        />
+                      </Box>
                     </div>
                   </>
                 )}

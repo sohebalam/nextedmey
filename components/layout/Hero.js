@@ -1,4 +1,4 @@
-import { Box, Grid, Typography } from "@material-ui/core"
+import { Box, Card, Grid, Paper, Typography } from "@material-ui/core"
 
 const outcomes = [
   "How to build this landing page with Next.js",
@@ -42,6 +42,9 @@ const Hero = ({ title, subtitle }) => {
         >
           {subtitle}
         </Typography>
+        <Grid container>
+          <Box pb="2rem"></Box>
+        </Grid>
       </Grid>
     </Grid>
   )

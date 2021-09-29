@@ -1,7 +1,7 @@
-import User from "../models/user"
+import User from "../models/userModel"
 import queryString from "query-string"
 const stripe = require("stripe")(process.env.STRIPE_SECRET)
-import Course from "../models/course"
+import Course from "../models/courseModel"
 
 export const studentCount = async (req, res) => {
   try {

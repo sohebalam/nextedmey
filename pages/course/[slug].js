@@ -25,7 +25,7 @@ const Course = ({ course }) => {
     try {
       setLoading(true)
       if (!user) {
-        router.push("/login")
+        router.push("/user/login")
       }
       if (enrolled.status) {
         return router.push(`/user/course/${enrolled.course.slug}`)

@@ -83,8 +83,8 @@ const UpdateCourse = ({
   const loadCourse = async () => {
     const { data } = await axios.get(`/api/course/${slug}`)
 
-    if (data.image.Location) {
-      var url = data.image.Location
+    if (data?.image?.Location) {
+      var url = data?.image?.Location
       setUrlimage(url)
     }
     setValues(data)
