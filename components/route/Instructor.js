@@ -11,7 +11,7 @@ const InstructorRoute = ({ children }) => {
   const profile = useSelector((state) => state.profile)
   const { loading, error, dbUser } = profile
 
-  console.log(dbUser)
+  // console.log(dbUser)
 
   const dispatch = useDispatch()
   // state

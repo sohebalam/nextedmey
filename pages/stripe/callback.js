@@ -18,6 +18,20 @@ const StripeCallback = () => {
     }
   }, [dbUser])
 
+  useEffect(() => {
+    if (dbUser) {
+      axios.post("/api/instructor/getAccountStatus").then((res) => {
+        // console.log(res);
+        dispatch({
+          type: "LOGIN",
+          payload: res.data,
+        })
+        window.localStorage.setItem("user", JSON.stringify(res.data))
+        window.location.href = "/instructor"
+      })
+    }
+  }, [dbUser])
+
   return <CircularProgress />
 }
 
