@@ -49,7 +49,7 @@ const InstructorMenu = () => {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        {dbUser && dbUser.role === "instructor" ? (
+        {dbUser && dbUser.role && dbUser.role.includes("instructor") ? (
           <div>
             <Link href="/user/instructor/create">
               <MenuItem onClick={handleClose}>Create Course</MenuItem>

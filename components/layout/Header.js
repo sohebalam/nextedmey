@@ -17,7 +17,8 @@ import { useSelector, useDispatch } from "react-redux"
 import { useEffect } from "react"
 import MenuButton from "../layout/MenuButton"
 import InstructorMenu from "./InstructorMenu"
-
+// import HowToRegIcon from "@mui/icons-material/HowToReg"
+import EmojiPeopleIcon from "@mui/icons-material/EmojiPeople"
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -98,13 +99,42 @@ function Header() {
             <Typography variant="h6" className={classes.title}></Typography>
 
             <>
+              {/* {dbUser && dbUser.role && dbUser.role.includes("instructor") ? (
+                <InstructorMenu dbUser={dbUser} /> ? (
+                  dbUser
+                ) : (
+                  <>
+                    <Link href="/user/instructor/new">
+                      <Button style={{ color: "white" }}>
+                        <EmojiPeopleIcon style={{ marginRight: "0.3rem" }} />
+                        Become Instructor
+                      </Button>
+                    </Link>
+                  </>
+                )
+              ) : (
+                []
+              )} */}
+
+              {dbUser && dbUser.role && dbUser.role.includes("instructor") ? (
+                <InstructorMenu dbUser={dbUser} />
+              ) : (
+                dbUser && (
+                  <Link href="/user/instructor/new">
+                    <Button style={{ color: "white" }}>
+                      <EmojiPeopleIcon style={{ marginRight: "0.3rem" }} />
+                      Become Instructor
+                    </Button>
+                  </Link>
+                )
+              )}
+
               {dbUser ? (
                 <>
                   <div>
                     {/* <Link href="/user/instructor/create"> */}
                     {/* <Button style={{ color: "white" }}> */}
 
-                    <InstructorMenu dbUser={dbUser} />
                     {/* </Button> */}
                     {/* </Link> */}
                   </div>

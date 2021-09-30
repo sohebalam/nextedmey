@@ -8,7 +8,7 @@ import { sendEmail } from "../middlewares/sendMail"
 import validator from "validator"
 import queryString from "query-string"
 
-const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY)
+const stripe = require("stripe")(process.env.STRIPE_SECRET)
 
 export const registerUser = catchAsyncErrors(async (req, res) => {
   console.log(req.method)

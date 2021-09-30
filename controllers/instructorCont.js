@@ -90,7 +90,7 @@ export const getAccountStatus = async (req, res) => {
         user._id,
         {
           stripe_seller: account,
-          $addToSet: { role: "Instructor" },
+          $addToSet: { role: "instructor" },
         },
         { new: true }
       )

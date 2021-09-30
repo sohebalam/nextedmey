@@ -1,3 +1,4 @@
 homepage
 dragable list
 redux
+  destination: @stripe_account,

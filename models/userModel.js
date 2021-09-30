@@ -45,9 +45,11 @@ const userSchema = mongoose.Schema(
       default: "",
     },
     role: {
-      type: String,
-      default: "user",
+      type: [String],
+      default: ["user"],
+      enum: ["user", "instructor", "admin"],
     },
+
     stripe_account_id: "",
     stripe_seller: {},
     stripeSession: {},

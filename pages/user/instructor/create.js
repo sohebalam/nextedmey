@@ -97,9 +97,8 @@ const CourseCreate = () => {
 
     values.price = parseFloat(strNum)
     // console.log(values)
-    // return
     try {
-      // console.log(values);
+      console.log(values)
       const { data } = await axios.post("/api/course/course", {
         ...values,
         image,
