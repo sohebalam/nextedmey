@@ -38,8 +38,8 @@ export const instructorPayoutSettings = async (req, res) => {
       { redirect_url: process.env.STRIPE_SETTINGS_REDIRECT }
     )
 
-    console.log(loginLink)
-    return
+    // console.log(loginLink)
+
     res.json(loginLink.url)
   } catch (err) {
     console.log("stripe payout settings login link err => , err")

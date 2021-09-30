@@ -437,6 +437,8 @@ export const freeEnrollment = async (req, res) => {
 // }
 
 export const paidEnrollment = async (req, res) => {
+  console.log(req.method)
+
   try {
     // check if course is free or paid
     const course = await Course.findById(req.query.courseId)
@@ -447,8 +449,6 @@ export const paidEnrollment = async (req, res) => {
     const fee = (course.price * 30) / 100
 
     console.log(course.instructor.stripe_account_id)
-
-    return
 
     // create stripe session
     const session = await stripe.checkout.sessions.create({

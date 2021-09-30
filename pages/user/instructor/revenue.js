@@ -7,10 +7,12 @@ import {
   SyncOutlined,
 } from "@ant-design/icons"
 import { stripeCurrencyFormatter } from ".././../../utils/currency"
+import { useRouter } from "next/router"
 
 const InstructorRevenue = () => {
   const [balance, setBalance] = useState({ pending: [] })
   const [loading, setLoading] = useState(false)
+  const router = useRouter()
 
   useEffect(() => {
     sendBalanceRequest()
@@ -25,7 +27,9 @@ const InstructorRevenue = () => {
     try {
       setLoading(true)
       const { data } = await axios.get("/api/instructor/payout")
-      window.location.href = data
+      // console.log(data)
+
+      router.push(data)
     } catch (err) {
       setLoading(false)
       console.log(err)

@@ -99,23 +99,6 @@ function Header() {
             <Typography variant="h6" className={classes.title}></Typography>
 
             <>
-              {/* {dbUser && dbUser.role && dbUser.role.includes("instructor") ? (
-                <InstructorMenu dbUser={dbUser} /> ? (
-                  dbUser
-                ) : (
-                  <>
-                    <Link href="/user/instructor/new">
-                      <Button style={{ color: "white" }}>
-                        <EmojiPeopleIcon style={{ marginRight: "0.3rem" }} />
-                        Become Instructor
-                      </Button>
-                    </Link>
-                  </>
-                )
-              ) : (
-                []
-              )} */}
-
               {dbUser && dbUser.role && dbUser.role.includes("instructor") ? (
                 <InstructorMenu dbUser={dbUser} />
               ) : (

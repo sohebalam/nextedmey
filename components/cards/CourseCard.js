@@ -5,7 +5,6 @@ import { currencyFormatter } from "../../utils/currency"
 
 const CourseCard = ({ course }) => {
   const { title, instructor, price, image, slug, paid, category } = course
-  console.log(image)
   return (
     <Link href={`course/${slug}`}>
       <Card style={{ padding: "1rem" }}>
